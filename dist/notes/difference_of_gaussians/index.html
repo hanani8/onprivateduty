@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><meta charset="UTF-8"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous"><!-- <BaseHead title={title} /> --><style>main[data-astro-cid-bvzihdzo]{width:calc(100% - 2em);max-width:100%;margin:0}.hero-image[data-astro-cid-bvzihdzo]{width:100%}.hero-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo]{display:block;margin:0 auto;border-radius:12px;box-shadow:var(--box-shadow)}.prose[data-astro-cid-bvzihdzo]{width:720px;max-width:calc(100% - 2em);margin:auto;padding:1em;color:rgb(var(--gray-dark))}.title[data-astro-cid-bvzihdzo]{margin-bottom:1em;padding:1em 0;text-align:center;line-height:1}.title[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{margin:0 0 .5em}.date[data-astro-cid-bvzihdzo]{margin-bottom:.5em;color:rgb(var(--gray))}.last-updated-on[data-astro-cid-bvzihdzo]{font-style:italic}
+</style></head> <body data-astro-cid-bvzihdzo> <!-- <Header /> --> <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <!-- <div class="hero-image">
+          {
+            heroImage && (
+              <Image width={1020} height={510} src={heroImage} alt="" />
+            )
+          }
+        </div> --> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <!-- <div class="date">
+              <FormattedDate date={pubDate} />
+              {
+                updatedDate && (
+                  <div class="last-updated-on">
+                    Last updated on <FormattedDate date={updatedDate} />
+                  </div>
+                )
+              }
+            </div> --> <h1 data-astro-cid-bvzihdzo>Difference of Gaussians (DoG)</h1> <hr data-astro-cid-bvzihdzo> </div>  <p><strong>My Prompt</strong>: Assume a blur is a like a socialist goverment that is hell-bent on taking money from the rich and giving it to the poor. The higher the sigma value, the higher is its socialistic tendencies. Now, does DoG calculate how much did the citizens lost or gained the money that they originally had. The common sense dictates that the rich guys AKA they guys who had a rapid change of intensity lost the most. Therefore the DoG outputs those guys.</p>
+<p>Is this a good analogy for what DoG does?</p>
+<p><strong>The Result:</strong></p>
+<p>Yes, that’s a creative and effective analogy! Let’s expand on it to make the concept of Difference of Gaussians (DoG) clearer using this “socialist government” metaphor.</p>
+<h3 id="gaussian-blur-as-a-socialist-government">Gaussian Blur as a Socialist Government</h3>
+<ul>
+<li><strong>Gaussian Blur with Small Sigma (σ)</strong>: Imagine a government that redistributes wealth slightly. The rich (areas with high intensity) lose a bit, and the poor (areas with low intensity) gain a bit, but the differences are still noticeable.</li>
+<li><strong>Gaussian Blur with Large Sigma (σ)</strong>: Now, imagine a more extreme government that redistributes wealth significantly. The rich lose much more, and the wealth is spread more evenly across the population, making the differences less noticeable.</li>
+</ul>
+<h3 id="difference-of-gaussians-dog">Difference of Gaussians (DoG)</h3>
+<ul>
+<li><strong>First Gaussian Blur (Small Redistribution)</strong>: This is like a mild redistribution where some wealth is taken from the rich and given to the poor, but you can still see some rich people and some poor people.</li>
+<li><strong>Second Gaussian Blur (Large Redistribution)</strong>: This is like a more extreme redistribution where wealth is taken more aggressively from the rich and given to the poor, making everyone more equal.</li>
+</ul>
+<h3 id="dog-calculation">DoG Calculation</h3>
+<ul>
+<li><strong>DoG</strong>: The Difference of Gaussians calculates the difference between the results of the mild redistribution and the extreme redistribution. This difference highlights the areas where the changes were most significant, which corresponds to the rich who lost the most in the analogy.</li>
+</ul>
+<p>So, in this analogy:</p>
+<ol>
+<li><strong>Original Image</strong>: Represents the initial distribution of wealth with clear differences (intensity variations).</li>
+<li><strong>First Blurred Image (Small Sigma)</strong>: Represents a mildly redistributed wealth scenario (slightly blurred image).</li>
+<li><strong>Second Blurred Image (Large Sigma)</strong>: Represents a more significantly redistributed wealth scenario (more blurred image).</li>
+<li><strong>DoG Image</strong>: Represents the calculation of how much the rich (areas of high intensity) lost during the redistribution. This highlights the areas with the most significant changes in intensity, which are the keypoints.</li>
+</ol>
+<h3 id="summary">Summary</h3>
+<p>In summary, the DoG operation indeed calculates the difference in intensity between images blurred with different levels of σ. It highlights areas where the intensity changes the most, which are typically edges and corners (the “rich” areas in your analogy). These highlighted areas are where significant features are located, and these features become the keypoints used in further stages of the SIFT algorithm. So, your analogy is quite apt and helps illustrate how the DoG process identifies important features in an image by focusing on areas of significant change.</p>  </div> </article> </main> <!-- <Footer /> --> </body></html>

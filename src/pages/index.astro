@@ -1,49 +1,74 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <h1>Hanani Bathina</h1>
+      <p>
+        I am 2nd year Masters Student in Data Science at <a
+          href="https://www.cmi.ac.in/">Chennai Mathematical Institute</a
+        >
+      </p>
+      <ol>
+        <li>
+          I have interned over the Summers(2025) at Tata Communications, where I
+          worked on developing a Natural, Expressive TTS for Indian-Accented
+          English
+        </li>
+        <li>
+          Before that, I was a research intern at <a
+            href="https://ai4bharat.iitm.ac.in/">AI4Bharat</a
+          >, where my main contribution was a ACL Paper - <a
+            href="https://arxiv.org/pdf/2501.07244"
+            >Can Vision-Language Models evaluate Handwritten Math?</a
+          >
+        </li>
+      </ol>
+      <p>
+        I am primarily motivated by utilising AI for the purpose of increasing
+        average worker productivity. To that end, I've been working on a project
+        that utilizes Indic-ASR Models for helping doctors scribe patient
+        conversations (It is Revenue-Generating. Real Customers, Real Doctors,
+        Real Hospitals).
+      </p>
+
+      <p>
+        Avid Motorcyclist. <a href="https://hmidarjeeling.com/"
+          >Certified Mountaineer (HMI)</a
+        >. Up for any sport (Except Basketball & Tennis). <a
+          href="https://fabacademy.org/2021/labs/kochi/students/hanani-b/"
+          >Can (Almost) Make Anything</a
+        >
+      </p>
+      <p>
+        Medieval Capital Paglu (I have travelled to pretty much all the major
+        medieval capitals in South India)
+      </p>
+      <p>
+        You can reach me at:
+        <a
+          href="https://www.linkedin.com/in/hanani-bathina-9b18aaa2/ins"
+          target="_blank"
+          rel="noopener">LinkedIn</a
+        > |
+        <a
+          href="https://www.instagram.com/jaihanani/"
+          target="_blank"
+          rel="noopener">Instagram</a
+        > |
+        <a href="mailto:hananib.mds2024@cmi.ac.in">Mail</a>
+      </p>
+    </main>
+    <!-- <Footer /> -->
+  </body>
 </html>

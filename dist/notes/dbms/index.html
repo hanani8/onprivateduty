@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><meta charset="UTF-8"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous"><!-- <BaseHead title={title} /> --><style>main[data-astro-cid-bvzihdzo]{width:calc(100% - 2em);max-width:100%;margin:0}.hero-image[data-astro-cid-bvzihdzo]{width:100%}.hero-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo]{display:block;margin:0 auto;border-radius:12px;box-shadow:var(--box-shadow)}.prose[data-astro-cid-bvzihdzo]{width:720px;max-width:calc(100% - 2em);margin:auto;padding:1em;color:rgb(var(--gray-dark))}.title[data-astro-cid-bvzihdzo]{margin-bottom:1em;padding:1em 0;text-align:center;line-height:1}.title[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{margin:0 0 .5em}.date[data-astro-cid-bvzihdzo]{margin-bottom:.5em;color:rgb(var(--gray))}.last-updated-on[data-astro-cid-bvzihdzo]{font-style:italic}
+</style></head> <body data-astro-cid-bvzihdzo> <!-- <Header /> --> <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <!-- <div class="hero-image">
+          {
+            heroImage && (
+              <Image width={1020} height={510} src={heroImage} alt="" />
+            )
+          }
+        </div> --> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <!-- <div class="date">
+              <FormattedDate date={pubDate} />
+              {
+                updatedDate && (
+                  <div class="last-updated-on">
+                    Last updated on <FormattedDate date={updatedDate} />
+                  </div>
+                )
+              }
+            </div> --> <h1 data-astro-cid-bvzihdzo>Database Management System</h1> <hr data-astro-cid-bvzihdzo> </div>  <p><strong>Topics</strong></p>
+<ol>
+<li>Loseless Decomposition</li>
+<li>Dependency Preservation</li>
+<li>Functional Dependency</li>
+<li>Closure</li>
+<li>First Normal Form</li>
+<li>Second Normal Form</li>
+<li>Third Normal Form</li>
+<li>Trivial Dependency</li>
+<li>Transitive Dependency</li>
+<li>Super Key</li>
+<li>Candidate Key</li>
+<li>Primary Key</li>
+<li>Boyce-Codd Normal Form</li>
+</ol>
+<hr>
+<p><strong>Redundancy and Anomaly</strong>
+Having multiple copies of the same data in database is called redundancy, and database operations on such databases cause anomalies.</p>
+<p><strong>Normalization</strong> —> <em>Good Decomposition</em> —> Minimization of Dependency</p>
+<hr>
+<h3 id="functional-dependency">Functional Dependency</h3>
+<p>dept_name —> Budget, Building</p>
+<h3 id="lossy-decomposition">Lossy Decomposition</h3>
+<p>When 1 of the 2 decomposed relations is a weak entity set, then we may have lossy decomposition. Example:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="txt"><code><span class="line"><span>Suppose we decompose</span></span>
+<span class="line"><span>employee(ID, name, street, city, salary) into</span></span>
+<span class="line"><span>employee1 (ID, name)</span></span>
+<span class="line"><span>employee2 (name, street, city, salary)</span></span>
+<span class="line"><span>• Note that if name can be duplicate, then employee2 is a weak entity set and cannot</span></span>
+<span class="line"><span>exist without an identifying relationship</span></span>
+<span class="line"><span>• Consequently, this decomposition cannot preserve the information</span></span></code></pre>
+<h3 id="loseless-join-decomposition">Loseless-Join Decomposition</h3>
+<p>Is a decomposition of a Relation <em>R</em> into relations <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">R_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">R_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, such that if we perform natural join of 2 smaller relations it will return the original relation</p>
+<p>Decomposition is lossy if R1 cartestion join R2 ⊃ R
+Decomposition is lossless if R1 cartesian join R2 = R</p>
+<h3 id="1nf">1NF</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>◦ the domains of all attributes of R are atomic</span></span>
+<span class="line"><span>◦ the value of each attribute contains only a single value from that domain</span></span></code></pre>
+<h3 id="functional-dependency-1">Functional Dependency</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Let R be a relation schema</span></span>
+<span class="line"><span>α ⊆ R and β ⊆ R</span></span>
+<span class="line"><span>• The functional dependency or FD</span></span>
+<span class="line"><span>α → β</span></span>
+<span class="line"><span>holds on R if and only if for any legal relations r(R), whenever any two tuples t1 and t2</span></span>
+<span class="line"><span>of r agree on the attributes α, they also agree on the attributes β. That is,</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>t1[α] = t2[α] ⇒ t1[β] = t2[β]</span></span></code></pre>
+<p><em>We say that F holds on R if all legal relations on R satisfy the set of functional
+dependencies F</em></p>
+<h3 id="super-key">Super Key</h3>
+<p><code>K</code> is a super-key if and only if <code>k</code> —> <code>R</code></p>
+<h3 id="candidate-key">Candidate Key</h3>
+<p><code>K</code> is a super-key and there exists no <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> subset of <code>K</code>, and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> —> <code>R</code></p>
+<h3 id="trivial-dependency">Trivial Dependency</h3>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>→</mo><mi>β</mi></mrow><annotation encoding="application/x-tex">\alpha \rightarrow \beta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05278em;">β</span></span></span></span> , where <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>⊆</mo><mi>β</mi></mrow><annotation encoding="application/x-tex">\alpha \subseteq \beta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊆</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05278em;">β</span></span></span></span></p>
+<h3 id="closure-of-fds">Closure of FDs</h3>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><mrow><mi>A</mi><mo>→</mo><mi>B</mi><mo separator="true">,</mo><mi>B</mi><mo>→</mo><mi>C</mi></mrow></mrow><annotation encoding="application/x-tex">F = {A \rightarrow B, B \rightarrow C}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span></span>
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><mrow><mi>A</mi><mo>→</mo><mi>B</mi><mo separator="true">,</mo><mi>B</mi><mo>→</mo><mi>C</mi><mo separator="true">,</mo><mi>A</mi><mi>B</mi><mo>→</mo><mi>C</mi></mrow></mrow><annotation encoding="application/x-tex">F = {A \rightarrow B, B \rightarrow C, AB \rightarrow C}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span></span></p>
+<h3 id="armstrongs-axioms">Armstrong’s Axioms</h3>
+<p>Reflexivity,
+Augmentation,
+Transitivity</p>
+<p><strong>Derived Rules</strong>
+<em>Union</em>: alpha -> beta, alpha -> gamma, alpha -> beta gamma
+<em>Decomposition</em>: Opposite of Union
+Pseudotransitivity: alpha -> beta, gamma beta -> delta, then alpha gamma -> delta</p>
+<h3 id="closure-of-attribute-sets">Closure of Attribute Sets</h3>
+<p>Given a an attribute set, using the FDs, we build up the attribute set to its further extent possible.</p>
+<p><strong>Use cases of closure algorithm for attribute sets</strong></p>
+<ol>
+<li>Testing for Superkey</li>
+<li>Testing for Functional Dependency</li>
+<li>Computing Closure of F</li>
+</ol>
+<h3 id="bcnf">BCNF</h3>
+<p>A relation schema is set to be BCNF with respect to a set F of FDs, if all the functional dependencies (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>→</mo><mi>β</mi></mrow><annotation encoding="application/x-tex">\alpha \rightarrow \beta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05278em;">β</span></span></span></span>) in the closure set of F+ are either trivial or <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> is a superkey</p>
+<h4 id="decomposition">Decomposition</h4>
+<p>if a non-trivial dependency causes violtion of BCNF, decompose to <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> union <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi></mrow><annotation encoding="application/x-tex">\beta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05278em;">β</span></span></span></span> and (R - beta + alpha)</p>
+<h3 id="algorithm-to-check-for-loseless-decomposition">Algorithm to Check for Loseless Decomposition</h3>
+<p>Union of decomposed relations must be the original relation
+Intersection of decomposed relations mustn’t be empty
+Intersection of decomposed relations must be the key for atleast 1 relation</p>
+<h3 id="dependency-preservation">Dependency Preservation</h3>
+<p>If we can verify a functional dependency by only check it on 1 relation, instead of having to join the relations, then such a decomposition is dependency preserving.</p>
+<p>BCNF is not dependency preservation.
+3NF is.</p>
+<h3 id="3nf">3NF</h3>
+<p>alpha -> beta in F+,
+either
+alpha -> beta is trivial,
+alpha is superkey
+Each attribute in beta - alpha is contained in a candidate key. (each attribute may be in a different candidate key)</p>
+<h3 id="2nf">2NF</h3>
+<p>Is 1NF
+Does not contain partial dependency</p>
+<h3 id="partial-dependency">Partial Dependency</h3>
+<p>Y —> A, where A is a non-prime attribute(prime attribute is an attribute in the candidate key of the relation), and Y is a proper subset of a candidate key</p>
+<h3 id="3nf-again">3NF again</h3>
+<p>Is in 2NF,
+Should not contain transitive dependency
+X ->A, where A is part of some candidate key</p>
+<h3 id="transitive-dependency">Transitive Dependency</h3>
+<p>Transitive dependency occurred because a non-key attribute (Author) was determining
+another non-key attribute (Author Nationality).</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>A transitive dependency is a functional dependency which holds by virtue of</span></span>
+<span class="line"><span>transitivity. A transitive dependency can occur only in a relation that has three or more</span></span>
+<span class="line"><span>attributes.</span></span>
+<span class="line"><span>• Let A, B, and C designate three distinct attributes (or distinct collections of attributes)</span></span>
+<span class="line"><span>in the relation. Suppose all three of the following conditions hold:</span></span>
+<span class="line"><span>◦ A → B</span></span>
+<span class="line"><span>◦ It is not the case that B → A</span></span>
+<span class="line"><span>◦ B → C</span></span>
+<span class="line"><span>• Then the functional dependency A → C (which follows from 1 and 3 by the axiom of</span></span>
+<span class="line"><span>transitivity) is a transitive dependency</span></span></code></pre>
+<h3 id="testing-for-3nf">Testing for 3NF</h3>
+<h3 id="algorithm-for-3nf-decomposition">Algorithm for 3NF Decomposition</h3>
+<h3 id="testing-for-bcnf">Testing for BCNF</h3>
+<h3 id="testing-for-bcnf-decomposition">Testing for BCNF Decomposition</h3>  </div> </article> </main> <!-- <Footer /> --> </body></html>

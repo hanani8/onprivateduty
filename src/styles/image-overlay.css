@@ -1,0 +1,48 @@
+/* src/styles/image-overlay.css */
+
+/* The overlay container */
+.image-overlay-container {
+  position: fixed; /* Fixed position relative to the viewport */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust for perfect centering */
+  pointer-events: none; /* Allows clicks to pass through to elements behind it */
+  opacity: 0; /* Hidden by default */
+  visibility: hidden; /* Hidden by default */
+  transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth transition */
+  z-index: 1000; /* Ensure it's on top of other content */
+  /* Adjust size as needed, using max-width for responsiveness */
+  max-width: 400px;
+  max-height: 400px;
+  width: 90vw; /* Take 90% of viewport width */
+  height: auto;
+  border-radius: 8px; /* Rounded corners */
+  overflow: hidden; /* Hide overflow if image is larger than container */
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+}
+
+.image-overlay-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cover the container without distortion */
+  display: block; /* Remove extra space below image */
+}
+
+/* Specific positioning for right side of the screen */
+/* This example shifts it to the right half of the screen.
+   Adjust `right`, `left`, `transform` for your desired position. */
+.image-overlay-container.is-active {
+  opacity: 1;
+  visibility: visible;
+  /* Example for right-side overlay - adjust as you like */
+  left: auto; /* Remove left:50% */
+  right: 5%; /* 5% from the right edge */
+  transform: translateY(-50%); /* Only center vertically */
+}
+
+/*
+   Alternative: For a truly "on-side" effect where it sticks to one side
+   and moves with the cursor/hovered element, you'd need more complex JS
+   or even simpler pure CSS if you only have one fixed position.
+   The above `is-active` class is for a central or fixed-side popup.
+*/
