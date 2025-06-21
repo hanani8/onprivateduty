@@ -1,12 +1,8 @@
 ---
-import BaseHead from "../../components/BaseHead.astro";
-import Header from "../../components/Header.astro";
-import Footer from "../../components/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
-
+import PageLayout from "../../layouts/PageLayout.astro";
 import { getCollection } from "astro:content";
-const notes = await getCollection("notes");
 
+const notes = await getCollection("notes");
 const noteMap = new Map(notes.map((note) => [note.id, note]));
 
 const pbsrNote = noteMap.get("pbsr");
@@ -17,95 +13,146 @@ const stepsToSketchAGraphNote = noteMap.get("steps_to_sketch_a_graph");
 const dbmsNote = noteMap.get("dbms");
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-  </head>
-  <body>
-    <Header />
-    <main>
-      <h1>🧑‍🚀 Notes!</h1>
-      <ol>
-        <li>
-          Pre-Deep Learning Computer Vision Notes: <a
-            href="/html/CV_Week-1.html">Week-1</a
-          >, <a href="/html/CV_Week-2.html">Week-2</a>, <a
-            href="/html/CV_Week-3.html">Week-3</a
-          >
-        </li>
+<PageLayout>
+  <h1 class="text-3xl font-semibold mb-4">🧑‍🚀 Notes!</h1>
 
+  <ol class="list-decimal pl-5 space-y-3">
+    <li>
+      Pre-Deep Learning Computer Vision Notes:
+      <a class="text-primary hover:underline" href="/html/CV_Week-1.html">
+        Week-1</a
+      >,
+      <a class="text-primary hover:underline" href="/html/CV_Week-2.html">
+        Week-2</a
+      >,
+      <a class="text-primary hover:underline" href="/html/CV_Week-3.html">
+        Week-3</a
+      >
+    </li>
+
+    <li>
+      Lyophilization
+      <a class="text-accent hover:underline" href="/html/lyophilization.html">
+        Notes</a
+      >
+    </li>
+
+    <li>
+      Profound Sentences on the Concept of
+      <a class="text-error hover:underline" href="/html/kitsch.html"
+        ><em> Kitsch</em></a
+      >
+    </li>
+
+    <li>
+      <a class="text-info hover:underline" href="/html/josephus.html"
+        >Josephus Problem</a
+      > using <em>Rust</em>
+      on <strong>WASM</strong> and <code>Raw SVG</code>
+    </li>
+
+    <li>
+      An incomplete list of non-academic physical books I own —
+      <a class="text-warning hover:underline" href="/html/book_shelf.html">
+        Here</a
+      >
+    </li>
+
+    <li>
+      <a class="text-error hover:underline" href="/pdf/MFGAI.pdf">Notes</a> on Mathematical
+      Foundations of Generative AI
+    </li>
+
+    <li>
+      <a
+        class="text-success hover:underline"
+        href="https://drive.google.com/file/d/1Zhjwd8wQD1Nos7oWMWkv3s_4yySRP5QA/view"
+        >Notes</a
+      > on Numerical Linear Algebra
+    </li>
+
+    {
+      pbsrNote && (
         <li>
-          Lyophilization <a href="/html/lyophilization.html">Notes</a>
-        </li>
-        <li>
-          Profound Sentences on the Concept of <a href="/html/kitsch.html"
-            ><em>Kitsch</em></a
+          Notes on Probability and Statistics —
+          <a
+            class="text-primary hover:underline"
+            href={`/notes/${pbsrNote.id}`}
           >
+            {" "}
+            Here
+          </a>
         </li>
+      )
+    }
+
+    {
+      dogNote && (
         <li>
-          <a href="/html/josephus.html">Josephus Problem</a> using <em>Rust</em>
-          on
-          <strong>WASM</strong> and <code>Raw SVG</code>
+          Gaussian Blur as a Socialist Government — An Intuition for
+          <a class="text-accent hover:underline" href={`/notes/${dogNote.id}`}>
+            {" "}
+            Difference of Gaussians
+          </a>
         </li>
+      )
+    }
+
+    {
+      balanceNote && (
         <li>
-          An incomplete list of non-academic physical books, I own - <a
-            href="/html/book_shelf.html">Here</a
+          Balance and Equanimity —
+          <a
+            class="text-error hover:underline"
+            href={`/notes/${balanceNote.id}`}
           >
+            {" "}
+            Self-Talk
+          </a>
         </li>
+      )
+    }
+
+    {
+      fastaiNote && (
         <li>
-          <a href="pdf/MFGAI.pdf">Notes</a> on Mathematical Foundations of Generative
-          AI
+          Notes on Fast.ai — Chapter 9:
+          <a class="text-info hover:underline" href={`/notes/${fastaiNote.id}`}>
+            {" "}
+            Tabular
+          </a>
         </li>
-        {
-          pbsrNote && (
-            <li>
-              Notes on Probability and Statistics -{" "}
-              <a href={`/notes/${pbsrNote.id}`}>Here</a>
-            </li>
-          )
-        }
-        {
-          dogNote && (
-            <li>
-              Gaussian Blur as a Socialist Government - An Intuition for{" "}
-              <a href={`/notes/${dogNote.id}`}>{"Difference of Gaussians"}</a>
-            </li>
-          )
-        }
-        {
-          balanceNote && (
-            <li>
-              Balance and Equanimity -{" "}
-              <a href={`/notes/${balanceNote.id}`}>{"Self-Talk"}</a>
-            </li>
-          )
-        }
-        {
-          fastaiNote && (
-            <li>
-              Notes on Fast.ai - Chapter 9 :{" "}
-              <a href={`/notes/${fastaiNote.id}`}>{"Tabular"}</a>
-            </li>
-          )
-        }
-        {
-          stepsToSketchAGraphNote && (
-            <li>
-              Steps to Sketch a{" "}
-              <a href={`/notes/${stepsToSketchAGraphNote.id}`}>{"Graph"}</a>
-            </li>
-          )
-        }
-        {
-          dbmsNote && (
-            <li>
-              Database Management Systems -{" "}
-              <a href={`/notes/${dbmsNote.id}`}>{"DBMS"}</a>
-            </li>
-          )
-        }
-      </ol>
-    </main>
-  </body>
-</html>
+      )
+    }
+
+    {
+      stepsToSketchAGraphNote && (
+        <li>
+          Steps to Sketch a
+          <a
+            class="text-warning hover:underline"
+            href={`/notes/${stepsToSketchAGraphNote.id}`}
+          >
+            {" "}
+            Graph
+          </a>
+        </li>
+      )
+    }
+
+    {
+      dbmsNote && (
+        <li>
+          Database Management Systems —
+          <a
+            class="text-success hover:underline"
+            href={`/notes/${dbmsNote.id}`}
+          >
+            {" "}
+            DBMS
+          </a>
+        </li>
+      )
+    }
+  </ol>
+</PageLayout>

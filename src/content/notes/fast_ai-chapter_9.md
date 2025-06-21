@@ -1,5 +1,6 @@
 ---
 title: Fast.ai - Chapter 9 - Tabular Data
+uses_katex: false
 ---
 
 What are the different ways of dealing with categorical variables apart from OHE?

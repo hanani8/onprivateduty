@@ -1,5 +1,6 @@
 ---
 title: Balance and Equanimity
+uses_katex: false
 ---
 
 _Written on 11:51, 19th March, 2024_ right before the CMI Entrance Exam.

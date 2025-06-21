@@ -1,74 +1,78 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import PageLayout from "../layouts/PageLayout.astro";
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-  </head>
-  <body>
-    <Header />
-    <main>
-      <h1>Hanani Bathina</h1>
-      <p>
-        I am 2nd year Masters Student in Data Science at <a
-          href="https://www.cmi.ac.in/">Chennai Mathematical Institute</a
-        >
-      </p>
-      <ol>
-        <li>
-          I have interned over the Summers(2025) at Tata Communications, where I
-          worked on developing a Natural, Expressive TTS for Indian-Accented
-          English
-        </li>
-        <li>
-          Before that, I was a research intern at <a
-            href="https://ai4bharat.iitm.ac.in/">AI4Bharat</a
-          >, where my main contribution was a ACL Paper - <a
-            href="https://arxiv.org/pdf/2501.07244"
-            >Can Vision-Language Models evaluate Handwritten Math?</a
-          >
-        </li>
-      </ol>
-      <p>
-        I am primarily motivated by utilising AI for the purpose of increasing
-        average worker productivity. To that end, I've been working on a project
-        that utilizes Indic-ASR Models for helping doctors scribe patient
-        conversations (It is Revenue-Generating. Real Customers, Real Doctors,
-        Real Hospitals).
-      </p>
+<PageLayout>
+  <div class="prose prose-base lg:prose-lg max-w-none">
+    <h1 class="text-4xl font-bold text-primary mb-4">Hanani Bathina</h1>
 
-      <p>
-        Avid Motorcyclist. <a href="https://hmidarjeeling.com/"
-          >Certified Mountaineer (HMI)</a
-        >. Up for any sport (Except Basketball & Tennis). <a
-          href="https://fabacademy.org/2021/labs/kochi/students/hanani-b/"
-          >Can (Almost) Make Anything</a
-        >
-      </p>
-      <p>
-        Medieval Capital Paglu (I have travelled to pretty much all the major
-        medieval capitals in South India)
-      </p>
-      <p>
-        You can reach me at:
-        <a
-          href="https://www.linkedin.com/in/hanani-bathina-9b18aaa2/ins"
-          target="_blank"
-          rel="noopener">LinkedIn</a
-        > |
-        <a
-          href="https://www.instagram.com/jaihanani/"
-          target="_blank"
-          rel="noopener">Instagram</a
-        > |
-        <a href="mailto:hananib.mds2024@cmi.ac.in">Mail</a>
-      </p>
-    </main>
-    <!-- <Footer /> -->
-  </body>
-</html>
+    <p>
+      I am a 2nd-year Master's student in Data Science at
+      <a href="https://www.cmi.ac.in/" class="link link-"
+        >Chennai Mathematical Institute</a
+      >.
+    </p>
+
+    <ol class="list-decimal list-inside space-y-2">
+      <li>
+        I interned over the summer (2025) at Tata Communications, working on
+        developing a natural, expressive <strong>Text-to-Speech system</strong> for
+        Indian-accented English.
+      </li>
+      <li>
+        Before that, I was a research intern at
+        <a href="https://ai4bharat.iitm.ac.in/" class="link link-accent"
+          >AI4Bharat</a
+        >, where I contributed to an
+        <a href="https://arxiv.org/pdf/2501.07244" class="link">ACL paper</a> —
+        <em>Can Vision-Language Models evaluate Handwritten Math?</em>
+      </li>
+    </ol>
+
+    <p>
+      I am primarily motivated by using AI to enhance average worker
+      productivity. Currently, I'm building a project that utilizes <strong
+        >Indic-ASR models</strong
+      > to help doctors scribe patient conversations. It’s <em
+        >revenue-generating</em
+      >, with real customers, real doctors, and real hospitals.
+    </p>
+
+    <p>
+      Avid motorcyclist. <a
+        href="https://hmidarjeeling.com/"
+        class="link link-neutral">Certified Mountaineer (HMI)</a
+      >. Up for any sport (except basketball & tennis). I also
+      <a
+        href="https://fabacademy.org/2021/labs/kochi/students/hanani-b/"
+        class="link">Can (Almost) Make Anything</a
+      >.
+    </p>
+
+    <p>
+      <strong>Medieval Capital Paglu</strong> — I’ve travelled to pretty much all
+      the major medieval capitals in South India.
+    </p>
+
+    <p>
+      <span class="font-semibold">Reach me at:</span>
+      <a
+        href="https://www.linkedin.com/in/hanani-bathina-9b18aaa2/"
+        target="_blank"
+        rel="noopener"
+        class="link link-info">LinkedIn</a
+      >
+      &nbsp;|&nbsp;
+      <a
+        href="https://www.instagram.com/jaihanani/"
+        target="_blank"
+        rel="noopener"
+        class="link link-error">Instagram</a
+      >
+      &nbsp;|&nbsp;
+      <a href="mailto:hananib.mds2024@cmi.ac.in" class="link link-accent"
+        >Email</a
+      >
+    </p>
+  </div>
+</PageLayout>

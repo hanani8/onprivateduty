@@ -1,7 +1,7 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
-import BlogPost from "../../layouts/BlogPost.astro";
-import { render } from "astro:content";
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import MathPageLayout from "../../layouts/MathPageLayout.astro"; // for math-heavy pages
+import BlogPost from "../../layouts/BlogPost.astro"; // for regular pages
 
 export async function getStaticPaths() {
   const posts = await getCollection("notes");
@@ -10,12 +10,16 @@ export async function getStaticPaths() {
     props: post,
   }));
 }
+
 type Props = CollectionEntry<"notes">;
 
 const post = Astro.props;
 const { Content } = await render(post);
+
+// Choose layout based on frontmatter
+const Layout = post.data.uses_katex ? MathPageLayout : BlogPost;
 ---
 
-<BlogPost {...post.data}>
+<Layout {...post.data}>
   <Content />
-</BlogPost>
+</Layout>

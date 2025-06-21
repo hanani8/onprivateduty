@@ -1,153 +1,320 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import PageLayout from "../layouts/PageLayout.astro";
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-  </head>
-  <body>
-    <Header />
-    <main>
-      <h1>Projects</h1>
-      <ol>
-        <li>
-          <strong>An LLM Built From Scratch: </strong> I wanted to understand language
-          models not just as a consumer or student, but from the inside. So I built
-          a GPT-2–like model from scratch — everything from tokenization to training
-          loops. Just raw PyTorch and text files. That’s when I truly appreciated
-          what goes into making language models tick. <a
-            href="https://github.com/hanani8/Splitter"
-            target="_blank"
-            rel="noopener noreferrer"><em>GitHub</em></a
-          >
-        </li>
-        <li>
-          <strong>Mathematical Ability</strong>: I spent a whole semester
-          deep-diving into a highly mathematical and notation-heavy paper on
-          Strong Rank-Revealing QR Decompositions. I wrote code in Fortran
-          (thanks to autoregression, picking up new stuff is much easier now),
-          managed my team, parsed dense academic papers, and even explored
-          LAPACK’s source code. It was painful, dense, and one of the most
-          satisfying technical journeys I’ve taken — it made me fall even deeper
-          in love with numerical linear algebra and low-level programming. <a
-            href="/SRRQR-Slides/index.html"><em>See it for yourself</em></a
-          >
-        </li>
-        <li>
-          <strong>Data Visualization and Story-Telling</strong>: Data’s only
-          useful if it moves people. Over time, I’ve built a knack for taking
-          messy, dense datasets and telling stories with them — stories that are
-          clear, sharp, and sometimes even fun. It’s not just about charts, it’s
-          about narrative flow. See it for yourself:
-          <ul>
-            <li>
-              My Quintessential Work on Data Viz:
-              <a
-                href="https://slides.com/hananibathina/deck/fullscreen"
-                target="_blank"
-                rel="noopener noreferrer"><em>Here</em></a
-              >, <a
-                href="https://github.com/hanani8/team_ghee"
-                target="_blank"
-                rel="noopener noreferrer"><em>Code</em></a
-              >
-            </li>
-            <li>
-              My Take on Famous Burtin's Antibiotics (I removed the labels. Tell
-              me if you could decipher): <a href="/Burtin-Antibiotic/index.html"
-                >Here</a
-              >, <a
-                href="https://github.com/hanani8/Burtin-Anitibiotic-Data-Viz"
-                target="_blank"
-                rel="noopener noreferrer"><em>Code</em></a
-              >
-            </li>
-          </ul>
-          <!-- <li>
-          <strong>Computer Vision & Cricket</strong>: Tried to apply my
-          understanding of computer vision to my own cricket batting. Using
-          everything from template matching to CNNs on Mel spectrograms (and a
-          few things in between), I took a 30-minute batting session and
-          condensed it into a 30-second highlight reel. Part engineering, part
-          cricket, and all fun. I’m pretty sure my Instagram followers enjoyed
-          that barrage of sweet, sweet bat-meets-ball sounds.
-        </li> -->
-          <li>
-            <strong>Tools for Research in Vision-Language Models</strong>: I
-            built a full suite of tools to manage and support ~50 annotators
-            working on creating a benchmark dataset for VLMs, and to run model
-            inference for evaluation on that dataset. It was mission-critical —
-            with little room for failure, since both annotation and inference
-            are expensive — and focused on streamlining the entire pipeline,
-            from dataset creation to evaluation. A small but meaningful step
-            toward the larger vision: a Ten-Trillion-Token corpus for Indic
-            languages.
+<PageLayout>
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <h1 class="text-5xl font-bold mb-12 text-base-content">Projects</h1>
+
+    <ol class="space-y-8">
+      <li
+        class="group p-6 rounded-xl bg-base-200/50 hover:bg-base-200 transition-all duration-300 hover:shadow-lg border border-base-300/50"
+      >
+        <div class="flex items-start gap-4">
+          <div class="w-2 h-2 rounded-full bg-neutral-content mt-3"></div>
+          <div class="flex-1">
+            <h3 class="text-xl font-bold text-base-content mb-3">
+              An LLM Built From Scratch
+            </h3>
+            <p class="text-base-content/80 leading-relaxed mb-4">
+              I wanted to understand language models not just as a consumer or
+              student, but from the inside. So I built a GPT-2–like model from
+              scratch — everything from tokenization to training loops. Just raw
+              PyTorch and text files. That's when I truly appreciated what goes
+              into making language models tick.
+            </p>
+            <a
+              href="https://github.com/hanani8/Splitter"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-info hover:text-info-focus font-medium underline decoration-2 underline-offset-4 transition-colors"
+            >
+              GitHub
+            </a>
+          </div>
+        </div>
+      </li>
+
+      <li
+        class="group p-6 rounded-xl bg-base-200/50 hover:bg-base-200 transition-all duration-300 hover:shadow-lg border border-base-300/50"
+      >
+        <div class="flex items-start gap-4">
+          <div class="w-2 h-2 rounded-full bg-neutral-content mt-3"></div>
+          <div class="flex-1">
+            <h3 class="text-xl font-bold text-base-content mb-3">
+              Mathematical Ability
+            </h3>
+            <p class="text-base-content/80 leading-relaxed mb-4">
+              I spent a whole semester deep-diving into a highly mathematical
+              and notation-heavy paper on Strong Rank-Revealing QR
+              Decompositions. I wrote code in Fortran (thanks to autoregression,
+              picking up new stuff is much easier now), managed my team, parsed
+              dense academic papers, and even explored LAPACK's source code. It
+              was painful, dense, and one of the most satisfying technical
+              journeys I've taken — it made me fall even deeper in love with
+              numerical linear algebra and low-level programming.
+            </p>
+            <a
+              href="/SRRQR-Slides/index.html"
+              class="text-success hover:text-success-focus font-medium underline decoration-2 underline-offset-4 transition-colors"
+            >
+              See it for yourself
+            </a>
+          </div>
+        </div>
+      </li>
+
+      <li
+        class="group p-6 rounded-xl bg-base-200/50 hover:bg-base-200 transition-all duration-300 hover:shadow-lg border border-base-300/50"
+      >
+        <div class="flex items-start gap-4">
+          <div class="w-2 h-2 rounded-full bg-neutral-content mt-3"></div>
+          <div class="flex-1">
+            <h3 class="text-xl font-bold text-base-content mb-3">
+              Data Visualization and Story-Telling
+            </h3>
+            <p class="text-base-content/80 leading-relaxed mb-4">
+              Data's only useful if it moves people. Over time, I've built a
+              knack for taking messy, dense datasets and telling stories with
+              them — stories that are clear, sharp, and sometimes even fun. It's
+              not just about charts, it's about narrative flow. See it for
+              yourself:
+            </p>
+            <div class="space-y-3 ml-4 border-l-2 border-neutral/30 pl-4">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-base-content font-medium"
+                  >My Quintessential Work on Data Viz:</span
+                >
+                <a
+                  href="https://slides.com/hananibathina/deck/fullscreen"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-success hover:text-success-focus font-medium underline decoration-2 underline-offset-2 transition-colors"
+                >
+                  Here
+                </a>
+                <span class="text-base-content/60">|</span>
+                <a
+                  href="https://github.com/hanani8/team_ghee"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-info hover:text-info-focus font-medium underline decoration-2 underline-offset-2 transition-colors"
+                >
+                  Code
+                </a>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-base-content font-medium"
+                  >My Take on Famous Burtin's Antibiotics:</span
+                >
+                <a
+                  href="/Burtin-Antibiotic/index.html"
+                  class="text-success hover:text-success-focus font-medium underline decoration-2 underline-offset-2 transition-colors"
+                >
+                  Here
+                </a>
+                <span class="text-base-content/60">|</span>
+                <a
+                  href="https://github.com/hanani8/Burtin-Anitibiotic-Data-Viz"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-info hover:text-info-focus font-medium underline decoration-2 underline-offset-2 transition-colors"
+                >
+                  Code
+                </a>
+                <span class="text-base-content/60">|</span>
+                <a
+                  href="/images/burtin-poster.svg"
+                  class="text-primary hover:text-primary-focus font-medium underline decoration-2 underline-offset-2 transition-colors"
+                >
+                  Poster
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li
+        class="group p-6 rounded-xl bg-base-200/50 hover:bg-base-200 transition-all duration-300 hover:shadow-lg border border-base-300/50"
+      >
+        <div class="flex items-start gap-4">
+          <div class="w-2 h-2 rounded-full bg-neutral-content mt-3"></div>
+          <div class="flex-1">
+            <h3 class="text-xl font-bold text-base-content mb-3">
+              Tools for Research in Vision-Language Models
+            </h3>
+            <p class="text-base-content/80 leading-relaxed mb-4">
+              I built a full suite of tools to manage and support ~50 annotators
+              working on creating a benchmark dataset for VLMs, and to run model
+              inference for evaluation on that dataset. It was mission-critical
+              — with little room for failure, since both annotation and
+              inference are expensive — and focused on streamlining the entire
+              pipeline, from dataset creation to evaluation. A small but
+              meaningful step toward the larger vision: a Ten-Trillion-Token
+              corpus for Indic languages.
+            </p>
             <a
               href="https://github.com/hanani8/hmer-eval"
               target="_blank"
-              rel="noopener noreferrer">Github</a
+              rel="noopener noreferrer"
+              class="text-primary hover:text-primary-focus font-medium underline decoration-2 underline-offset-4 transition-colors"
             >
-          </li>
-          <li>
-            <strong>Graphs Visualizer for Adjacency Matrices</strong>: I wanted
-            students of Graph Algorithms (like myself at the time) to see and
-            feel graphs, not just trace through lists and arrays. Figured out
-            SVG through pure documentation-diving — It was pre-GPT era — and
-            built something that made graphs a easy to work with. Looking back,
-            it was my first brush with building educational tools that felt
-            useful. <a href="/html/visualize_graphs.html">Use it here!</a>
-            <li>
-              <strong>Not Just Code: Leading, Building, Shipping</strong>: This
-              was where theory met application. I led a team to develop and
+              GitHub
+            </a>
+          </div>
+        </div>
+      </li>
+
+      <li
+        class="group p-6 rounded-xl bg-base-200/50 hover:bg-base-200 transition-all duration-300 hover:shadow-lg border border-base-300/50"
+      >
+        <div class="flex items-start gap-4">
+          <div class="w-2 h-2 rounded-full bg-neutral-content mt-3"></div>
+          <div class="flex-1">
+            <h3 class="text-xl font-bold text-base-content mb-3">
+              Graphs Visualizer for Adjacency Matrices
+            </h3>
+            <p class="text-base-content/80 leading-relaxed mb-4">
+              I wanted students of Graph Algorithms (like myself at the time) to
+              see and feel graphs, not just trace through lists and arrays.
+              Figured out SVG through pure documentation-diving — it was pre-GPT
+              era — and built something that made graphs easy to work with.
+              Looking back, it was my first brush with building educational
+              tools that felt useful.
+            </p>
+            <a
+              href="/html/visualize_graphs.html"
+              class="text-accent hover:text-accent-focus font-medium underline decoration-2 underline-offset-4 transition-colors"
+            >
+              Use it here!
+            </a>
+          </div>
+        </div>
+      </li>
+
+      <li
+        class="group p-6 rounded-xl bg-base-200/50 hover:bg-base-200 transition-all duration-300 hover:shadow-lg border border-base-300/50"
+      >
+        <div class="flex items-start gap-4">
+          <div class="w-2 h-2 rounded-full bg-neutral-content mt-3"></div>
+          <div class="flex-1">
+            <h3 class="text-xl font-bold text-base-content mb-3">
+              Not Just Code: Leading, Building, Shipping
+            </h3>
+            <p class="text-base-content/80 leading-relaxed mb-4">
+              This was where theory met application. I led a team to develop and
               deploy a simple app based on the Nearest-Neighbor algorithm. The
-              application itself wasn’t complicated, but the approach is what
+              application itself wasn't complicated, but the approach is what
               stands out. I learned to juggle code, bugs, timelines, and people
               — and somewhere in there, how to ship end-to-end products that not
-              only work, but are beautiful too. <a
+              only work, but are beautiful too.
+            </p>
+            <div class="flex flex-wrap items-center gap-2">
+              <a
                 href="https://hanani8.github.io/rtm/#/"
                 target="_blank"
-                rel="noopener noreferrer">See Here (Static-Build)</a
-              >, <a
+                rel="noopener noreferrer"
+                class="text-success hover:text-success-focus font-medium underline decoration-2 underline-offset-2 transition-colors"
+              >
+                See Here (Static-Build)
+              </a>
+              <span class="text-base-content/60">|</span>
+              <a
                 href="https://github.com/hanani8/vidhi"
                 target="_blank"
-                rel="noopener noreferrer">Frontend (Vidhi)</a
-              >, <a
+                rel="noopener noreferrer"
+                class="text-primary hover:text-primary-focus font-medium underline decoration-2 underline-offset-2 transition-colors"
+              >
+                Frontend (Vidhi)
+              </a>
+              <span class="text-base-content/60">|</span>
+              <a
                 href="https://github.com/hanani8/merupa"
                 target="_blank"
-                rel="noopener noreferrer">Backend (Merupa)</a
+                rel="noopener noreferrer"
+                class="text-accent hover:text-accent-focus font-medium underline decoration-2 underline-offset-2 transition-colors"
               >
-            </li>
-            <li>
-              <strong>Stadiometer</strong>: Built a functional stadiometer from
-              scratch — the kind that measures your height. This wasn’t just
-              code: it involved PCB design, CAD, laser cutting, wood milling,
-              embedded programming, and a whole lot of debugging. It taught me
-              the joy of building things that live outside the screen. Atoms,
-              not bits. <a
-                href="https://fabacademy.org/2021/labs/kochi/students/hanani-b/project.html"
-                target="_blank"
-                rel="noopener noreferrer">Documentation</a
-              >
-            </li>
-            <li>
-              <strong>Flagstaff</strong>: We’ve all grown up watching Americans
-              fly their flags in the most aesthetic way possible (think Wall
-              Street). In India, I saw a very different story — cheap fabric,
-              awkward poles. So I built an Indian flagstaff — minimalist,
-              elegant, and fully compliant with the Indian Flag Code. More
-              importantly, I sold them too (4 units at ₹1500 each). It’s my
-              little tribute to doing things with grace and intention. <a
-                href="/html/flag.html">Blog</a
-              >
-            </li>
-          </li>
-        </li>
-      </ol>
-    </main>
-  </body>
-</html>
+                Backend (Merupa)
+              </a>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li
+        class="group p-6 rounded-xl bg-base-200/50 hover:bg-base-200 transition-all duration-300 hover:shadow-lg border border-base-300/50"
+      >
+        <div class="flex items-start gap-4">
+          <div class="w-2 h-2 rounded-full bg-neutral-content mt-3"></div>
+          <div class="flex-1">
+            <h3 class="text-xl font-bold text-base-content mb-3">
+              Stadiometer
+            </h3>
+            <p class="text-base-content/80 leading-relaxed mb-4">
+              Built a functional stadiometer from scratch — the kind that
+              measures your height. This wasn't just code: it involved PCB
+              design, CAD, laser cutting, wood milling, embedded programming,
+              and a whole lot of debugging. It taught me the joy of building
+              things that live outside the screen. Atoms, not bits.
+            </p>
+            <a
+              href="https://fabacademy.org/2021/labs/kochi/students/hanani-b/project.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-primary hover:text-primary-focus font-medium underline decoration-2 underline-offset-4 transition-colors"
+            >
+              Documentation
+            </a>
+          </div>
+        </div>
+      </li>
+
+      <li
+        class="group p-6 rounded-xl bg-base-200/50 hover:bg-base-200 transition-all duration-300 hover:shadow-lg border border-base-300/50"
+      >
+        <div class="flex items-start gap-4">
+          <div class="w-2 h-2 rounded-full bg-neutral-content mt-3"></div>
+          <div class="flex-1">
+            <h3 class="text-xl font-bold text-base-content mb-3">Flagstaff</h3>
+            <p class="text-base-content/80 leading-relaxed mb-4">
+              We've all grown up watching Americans fly their flags in the most
+              aesthetic way possible (think Wall Street). In India, I saw a very
+              different story — cheap fabric, awkward poles. So I built an
+              Indian flagstaff — minimalist, elegant, and fully compliant with
+              the Indian Flag Code. More importantly, I sold them too (4 units
+              at ₹1500 each). It's my little tribute to doing things with grace
+              and intention.
+            </p>
+            <a
+              href="/html/flag.html"
+              class="text-primary hover:text-primary-focus font-medium underline decoration-2 underline-offset-4 transition-colors"
+            >
+              Blog
+            </a>
+          </div>
+        </div>
+      </li>
+    </ol>
+
+    <!-- Subtle footer element to indicate the list continues -->
+    <div class="mt-12 text-center">
+      <div
+        class="inline-flex items-center gap-2 text-base-content/50 font-medium"
+      >
+        <div
+          class="w-8 h-px bg-gradient-to-r from-transparent to-base-content/20"
+        >
+        </div>
+        <span class="text-sm"
+          >I apologize for the LinkedIn-Speak on this page!</span
+        >
+
+        <div
+          class="w-8 h-px bg-gradient-to-l from-transparent to-base-content/20"
+        >
+        </div>
+      </div>
+    </div>
+  </div>
+</PageLayout>

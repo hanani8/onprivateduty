@@ -1,5 +1,6 @@
 ---
 title: Steps to Sketch a Graph
+uses_katex: false
 ---
 
 1. Domain

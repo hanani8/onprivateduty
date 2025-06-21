@@ -1,0 +1,53 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="en" data-theme="retro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{SITE_TITLE}</title>
+    <meta name="description" content={SITE_DESCRIPTION} />
+    <script is:inline>
+      const storedTheme = localStorage.getItem("theme");
+      if (storedTheme) {
+        document.documentElement.setAttribute("data-theme", storedTheme);
+      }
+
+      // Observe theme changes by daisyui
+      window.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".theme-controller").forEach((input) => {
+          input.addEventListener("change", (e) => {
+            const newTheme = e.target.value;
+            document.documentElement.setAttribute("data-theme", newTheme);
+            localStorage.setItem("theme", newTheme);
+          });
+        });
+      });
+    </script>
+  </head>
+  <body
+    class="min-h-screen flex flex-col bg-base-100 text-base-content font-sans"
+  >
+    <!-- Header -->
+    <!-- <header
+      class="sticky top-0 z-50 bg-base-100/80 backdrop-blur-md border-b border-base-300"
+    > -->
+    <Header />
+    <!-- </header> -->
+
+    <!-- Main Content -->
+    <main class="flex-1 w-full max-w-3xl mx-auto px-4 py-8">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <!-- <footer class="bg-base-200 border-t border-base-300"> -->
+    <Footer />
+    <!-- </footer> -->
+  </body>
+</html>
