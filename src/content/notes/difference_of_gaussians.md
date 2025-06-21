@@ -1,5 +1,6 @@
 ---
 title: Difference of Gaussians (DoG)
+uses_katex: false
 ---
 
 **My Prompt**: Assume a blur is a like a socialist goverment that is hell-bent on taking money from the rich and giving it to the poor. The higher the sigma value, the higher is its socialistic tendencies. Now, does DoG calculate how much did the citizens lost or gained the money that they originally had. The common sense dictates that the rich guys AKA they guys who had a rapid change of intensity lost the most. Therefore the DoG outputs those guys.

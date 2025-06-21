@@ -1,5 +1,6 @@
 ---
 title: Database Management System
+uses_katex: true
 ---
 
 **Topics**

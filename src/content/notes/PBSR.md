@@ -1,5 +1,6 @@
 ---
 title: "Probability, Statistics, and Random Processes"
+uses_katex: true
 ---
 
 # Definition of Probability
