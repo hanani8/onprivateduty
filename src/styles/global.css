@@ -1,7 +1,5 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 @plugin "daisyui" {
-  themes: retro, cupcake, dark, light, forest, business, corporate, luxury,
-    synthwave, retro, cyberpunk, valentine, halloween, fantasy, winter, acid,
-    dracula, caramellatte, black, lofi, pastel;
+  themes: retro, luxury, light;
 }
