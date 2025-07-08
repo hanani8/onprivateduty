@@ -6,7 +6,7 @@ uses_katex: false
 ## Building an Indian-Accented English TTS
 
 <video controls>
-  <source src="/public/videos/keerthana_tts.mp4" type="video/mp4">
+  <source src="/videos/keerthana_tts.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
@@ -30,21 +30,21 @@ I downloaded the **IndicTTS Dataset**, sifted through various speakers, and chos
   
   <li>
     <audio controls>
-    <source src="/public/audios/keerthana_lora_0.wav" type="audio/wav">
+    <source src="/audios/keerthana_lora_0.wav" type="audio/wav">
     Your browser does not support the audio tag.
     </audio>
   </li>
   
   <li>
     <audio controls>
-    <source src="/public/audios/keerthana_lora_1.wav" type="audio/wav">
+    <source src="/audios/keerthana_lora_1.wav" type="audio/wav">
     Your browser does not support the audio tag.
     </audio>
   </li>
   
   <li>
     <audio controls>
-    <source src="/public/audios/keerthana_lora_2.wav" type="audio/wav">
+    <source src="/audios/keerthana_lora_2.wav" type="audio/wav">
     Your browser does not support the audio tag.
     </audio>
   </li>
@@ -55,9 +55,9 @@ My goal was to fine-tune just enough to teach it "Indian-ness"—but not so much
 
 ### WandB
 
-![](/public/images/bengali_female_train-loss.png)
-![](/public/images/bengali_female_train-gradnorm.png)
-![](/public/images/bengali_female_train-lr.png)
+![](/images/bengali_female_train-loss.png)
+![](/images/bengali_female_train-gradnorm.png)
+![](/images/bengali_female_train-lr.png)
 
 **The graphs aren't good news!**
 
@@ -112,15 +112,15 @@ The next challenge was training dynamics. My training curves were:
 
 _WANDB graphs_
 
-![](/public/images/emotion_train-loss.png)
-![](/public/images/emotion_train-gradnorm.png)
-![](/public/images/emotion_train-lr.png)
+![](/images/emotion_train-loss.png)
+![](/images/emotion_train-gradnorm.png)
+![](/images/emotion_train-lr.png)
 
 ---
 
 ### Comparison with BulbulTTS (Sarvam)
 
 <video controls>
-  <source src="/public/videos/sarvam_vs_hanani.mp4" type="video/mp4">
+  <source src="/videos/sarvam_vs_hanani.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
