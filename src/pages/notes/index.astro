@@ -11,6 +11,7 @@ const balanceNote = noteMap.get("balance_and_equanimity");
 const fastaiNote = noteMap.get("fast_ai-chapter_9");
 const stepsToSketchAGraphNote = noteMap.get("steps_to_sketch_a_graph");
 const dbmsNote = noteMap.get("dbms");
+const ganNote = noteMap.get("gan");
 ---
 
 <PageLayout>
@@ -79,6 +80,18 @@ const dbmsNote = noteMap.get("dbms");
             class="text-primary hover:underline"
             href={`/notes/${pbsrNote.id}`}
           >
+            {" "}
+            Here
+          </a>
+        </li>
+      )
+    }
+
+    {
+      ganNote && (
+        <li>
+          Mathematical Foundations of GANs —
+          <a class="text-primary hover:underline" href={`/notes/${ganNote.id}`}>
             {" "}
             Here
           </a>
