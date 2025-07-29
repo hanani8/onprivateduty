@@ -9,7 +9,6 @@ const notes = defineCollection({
 	schema: ({ image }) => z.object({
 		title: z.string(),
 		uses_katex: z.boolean().optional(),
-		// pubDate: z.coerce.date(),
 	}),
 });
 
