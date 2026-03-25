@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hanani Bathina">
+
+<title>Try This Out</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="assignment_files/libs/clipboard/clipboard.min.js"></script>
+<script src="assignment_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="assignment_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="assignment_files/libs/quarto-html/popper.min.js"></script>
+<script src="assignment_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="assignment_files/libs/quarto-html/anchor.min.js"></script>
+<link href="assignment_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="assignment_files/libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="assignment_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="assignment_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="assignment_files/libs/bootstrap/bootstrap-430579b502d59c3fdd64942a7b2a01a9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#assignment-try-this-out" id="toc-assignment-try-this-out" class="nav-link active" data-scroll-target="#assignment-try-this-out"><span class="header-section-number">1</span> Assignment: TRY THIS OUT</a>
+  <ul class="collapse">
+  <li><a href="#false" id="toc-false" class="nav-link" data-scroll-target="#false"><span class="header-section-number">1.1</span> FALSE</a></li>
+  <li><a href="#mdp-structure" id="toc-mdp-structure" class="nav-link" data-scroll-target="#mdp-structure"><span class="header-section-number">1.2</span> MDP Structure</a></li>
+  </ul></li>
+  <li><a href="#value-iteration" id="toc-value-iteration" class="nav-link" data-scroll-target="#value-iteration"><span class="header-section-number">2</span> Value Iteration</a></li>
+  <li><a href="#iterative-policy-evaluation" id="toc-iterative-policy-evaluation" class="nav-link" data-scroll-target="#iterative-policy-evaluation"><span class="header-section-number">3</span> Iterative Policy Evaluation</a></li>
+  <li><a href="#explanation" id="toc-explanation" class="nav-link" data-scroll-target="#explanation"><span class="header-section-number">4</span> Explanation</a>
+  <ul class="collapse">
+  <li><a href="#description-of-the-mdp" id="toc-description-of-the-mdp" class="nav-link" data-scroll-target="#description-of-the-mdp"><span class="header-section-number">4.1</span> Description of the MDP</a></li>
+  <li><a href="#value-iteration-and-policy-evaluation" id="toc-value-iteration-and-policy-evaluation" class="nav-link" data-scroll-target="#value-iteration-and-policy-evaluation"><span class="header-section-number">4.2</span> Value Iteration and Policy Evaluation</a>
+  <ul class="collapse">
+  <li><a href="#initital-values" id="toc-initital-values" class="nav-link" data-scroll-target="#initital-values"><span class="header-section-number">4.2.1</span> Initital Values</a></li>
+  <li><a href="#optimal-policy" id="toc-optimal-policy" class="nav-link" data-scroll-target="#optimal-policy"><span class="header-section-number">4.2.2</span> Optimal Policy</a></li>
+  <li><a href="#iterations" id="toc-iterations" class="nav-link" data-scroll-target="#iterations"><span class="header-section-number">4.2.3</span> Iterations</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">4.3</span> <strong>Conclusion</strong></a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Try This Out</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Hanani Bathina </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="assignment-try-this-out" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Assignment: TRY THIS OUT</h1>
+<p>Suppose <span class="math inline">\(\pi_i\)</span> and <span class="math inline">\(\pi_{i+1}\)</span> are two greedy policies you get from value iteration. True or False: <span class="math inline">\(\pi_{i} \leq \pi_{i+1}\)</span>.</p>
+<section id="false" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="false"><span class="header-section-number">1.1</span> FALSE</h2>
+<p>We know that, <span class="math inline">\(\pi_{i} \leq \pi_{i+1}\)</span> is true if and only if <span class="math inline">\(v_{\pi_i}(s) \leq v_{\pi_{i+1}}(s)\)</span>, <span class="math inline">\(\forall s \in \mathcal{S}\)</span>.</p>
+<p>I can construct a counterexample to show that this is not always the case.</p>
+</section>
+<section id="mdp-structure" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="mdp-structure"><span class="header-section-number">1.2</span> MDP Structure</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>State</th>
+<th>Action</th>
+<th>Next State</th>
+<th>Reward</th>
+<th>Probability</th>
+<th>Terminal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>0 (Left)</td>
+<td>0</td>
+<td>0</td>
+<td>1.0</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1 (Right)</td>
+<td>2</td>
+<td>-100</td>
+<td>1.0</td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>0 (Left)</td>
+<td>1</td>
+<td>100</td>
+<td>1.0</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1 (Right)</td>
+<td>3</td>
+<td>10,000</td>
+<td>1.0</td>
+<td>Yes</td>
+</tr>
+<tr class="odd">
+<td>0</td>
+<td>Any</td>
+<td>0</td>
+<td>0</td>
+<td>1.0</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Any</td>
+<td>3</td>
+<td>0</td>
+<td>1.0</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Visual Flow:</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="mdp.png" class="img-fluid figure-img"></p>
+<figcaption>MDP Diagram</figcaption>
+</figure>
+</div>
+<div id="6a9fa063" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">from</span> typing <span class="im">import</span> Optional</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="im">import</span> gymnasium <span class="im">as</span> gym</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4"></a></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co"># MDP I seek to Construct:</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co"># (0 | R=0, Terminal) --&lt;-(1/2)-- (1 | R=100) &lt;-(1/2)---(1/2)--&gt; (2 | R=-100) ----(1/2)--&gt; (3 | R=10,000, Terminal)</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="kw">class</span> MDPEnvironment(gym.Env):</span>
+<span id="cb1-9"><a href="#cb1-9"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb1-10"><a href="#cb1-10"></a>        <span class="va">self</span>.action_space <span class="op">=</span> gym.spaces.Discrete(<span class="dv">2</span>)</span>
+<span id="cb1-11"><a href="#cb1-11"></a>        <span class="va">self</span>.observation_space <span class="op">=</span> gym.spaces.Discrete(<span class="dv">4</span>)</span>
+<span id="cb1-12"><a href="#cb1-12"></a>        <span class="va">self</span>.state <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a>        <span class="va">self</span>.terminal_states <span class="op">=</span> {<span class="dv">0</span>, <span class="dv">3</span>}</span>
+<span id="cb1-14"><a href="#cb1-14"></a></span>
+<span id="cb1-15"><a href="#cb1-15"></a>        <span class="co"># P[s][a] = list of (prob, next_state, reward, terminated)</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a>        <span class="va">self</span>.P <span class="op">=</span> {</span>
+<span id="cb1-17"><a href="#cb1-17"></a>            <span class="dv">0</span>: {<span class="dv">0</span>: [(<span class="fl">1.0</span>, <span class="dv">0</span>, <span class="fl">0.0</span>, <span class="va">True</span>)],    <span class="dv">1</span>: [(<span class="fl">1.0</span>, <span class="dv">0</span>, <span class="fl">0.0</span>, <span class="va">True</span>)]},</span>
+<span id="cb1-18"><a href="#cb1-18"></a>            <span class="dv">1</span>: {<span class="dv">0</span>: [(<span class="fl">1.0</span>, <span class="dv">0</span>, <span class="fl">0.0</span>, <span class="va">True</span>)],    <span class="dv">1</span>: [(<span class="fl">1.0</span>, <span class="dv">2</span>, <span class="op">-</span><span class="fl">100.0</span>, <span class="va">False</span>)]},</span>
+<span id="cb1-19"><a href="#cb1-19"></a>            <span class="dv">2</span>: {<span class="dv">0</span>: [(<span class="fl">1.0</span>, <span class="dv">1</span>, <span class="fl">100.0</span>, <span class="va">False</span>)], <span class="dv">1</span>: [(<span class="fl">1.0</span>, <span class="dv">3</span>, <span class="fl">10000.0</span>, <span class="va">True</span>)]},</span>
+<span id="cb1-20"><a href="#cb1-20"></a>            <span class="dv">3</span>: {<span class="dv">0</span>: [(<span class="fl">1.0</span>, <span class="dv">3</span>, <span class="fl">0.0</span>, <span class="va">True</span>)],    <span class="dv">1</span>: [(<span class="fl">1.0</span>, <span class="dv">3</span>, <span class="fl">0.0</span>, <span class="va">True</span>)]},</span>
+<span id="cb1-21"><a href="#cb1-21"></a>        }</span>
+<span id="cb1-22"><a href="#cb1-22"></a></span>
+<span id="cb1-23"><a href="#cb1-23"></a>    <span class="kw">def</span> reset(<span class="va">self</span>, seed: Optional[<span class="bu">int</span>] <span class="op">=</span> <span class="va">None</span>, options<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb1-24"><a href="#cb1-24"></a>        <span class="bu">super</span>().reset(seed<span class="op">=</span>seed)</span>
+<span id="cb1-25"><a href="#cb1-25"></a>        <span class="va">self</span>.state <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb1-26"><a href="#cb1-26"></a>        <span class="cf">return</span> <span class="va">self</span>.state, {}</span>
+<span id="cb1-27"><a href="#cb1-27"></a></span>
+<span id="cb1-28"><a href="#cb1-28"></a>    <span class="kw">def</span> step(<span class="va">self</span>, action):</span>
+<span id="cb1-29"><a href="#cb1-29"></a>        prob, next_state, reward, terminated <span class="op">=</span> <span class="va">self</span>.P[<span class="va">self</span>.state][action][<span class="dv">0</span>]</span>
+<span id="cb1-30"><a href="#cb1-30"></a>        <span class="va">self</span>.state <span class="op">=</span> next_state</span>
+<span id="cb1-31"><a href="#cb1-31"></a>        truncated <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-32"><a href="#cb1-32"></a>        <span class="cf">return</span> next_state, reward, terminated, truncated, {}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="441ab82f" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>env <span class="op">=</span> MDPEnvironment()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+<section id="value-iteration" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Value Iteration</h1>
+<div id="f2c7855f" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">def</span> action_value_iteration(env, gamma<span class="op">=</span><span class="fl">1.0</span>, theta<span class="op">=</span><span class="fl">1e-4</span>, max_iters<span class="op">=</span><span class="dv">10000</span>):</span>
+<span id="cb3-2"><a href="#cb3-2"></a>    nS, nA <span class="op">=</span> env.observation_space.n, env.action_space.n</span>
+<span id="cb3-3"><a href="#cb3-3"></a>    Q <span class="op">=</span> np.zeros((nS, nA), dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>    Q[<span class="dv">1</span>, <span class="dv">0</span>] <span class="op">=</span> <span class="fl">10000.0</span>  <span class="co"># Initialize Q(1, L) to a high value to encourage exploration</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>    Q[<span class="dv">1</span>, <span class="dv">1</span>] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>    Q[<span class="dv">2</span>, <span class="dv">0</span>] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>    Q[<span class="dv">2</span>, <span class="dv">1</span>] <span class="op">=</span> <span class="op">-</span><span class="fl">100.0</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a></span>
+<span id="cb3-9"><a href="#cb3-9"></a>    q_history <span class="op">=</span> []</span>
+<span id="cb3-10"><a href="#cb3-10"></a></span>
+<span id="cb3-11"><a href="#cb3-11"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(max_iters):</span>
+<span id="cb3-12"><a href="#cb3-12"></a>        delta <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>        Q_new <span class="op">=</span> Q.copy()</span>
+<span id="cb3-14"><a href="#cb3-14"></a></span>
+<span id="cb3-15"><a href="#cb3-15"></a>        <span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(nS):</span>
+<span id="cb3-16"><a href="#cb3-16"></a>            <span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(nA):</span>
+<span id="cb3-17"><a href="#cb3-17"></a>                q_sa <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a>                <span class="cf">for</span> p, s_next, r, terminated <span class="kw">in</span> env.P[s][a]:</span>
+<span id="cb3-19"><a href="#cb3-19"></a>                    bootstrap <span class="op">=</span> <span class="fl">0.0</span> <span class="cf">if</span> terminated <span class="cf">else</span> np.<span class="bu">max</span>(Q[s_next])</span>
+<span id="cb3-20"><a href="#cb3-20"></a>                    q_sa <span class="op">+=</span> p <span class="op">*</span> (r <span class="op">+</span> gamma <span class="op">*</span> bootstrap)</span>
+<span id="cb3-21"><a href="#cb3-21"></a></span>
+<span id="cb3-22"><a href="#cb3-22"></a>                delta <span class="op">=</span> <span class="bu">max</span>(delta, <span class="bu">abs</span>(q_sa <span class="op">-</span> Q[s, a]))</span>
+<span id="cb3-23"><a href="#cb3-23"></a>                Q_new[s, a] <span class="op">=</span> q_sa</span>
+<span id="cb3-24"><a href="#cb3-24"></a></span>
+<span id="cb3-25"><a href="#cb3-25"></a>        q_history.append(Q_new.copy())</span>
+<span id="cb3-26"><a href="#cb3-26"></a>        Q <span class="op">=</span> Q_new</span>
+<span id="cb3-27"><a href="#cb3-27"></a>        <span class="cf">if</span> delta <span class="op">&lt;</span> theta:</span>
+<span id="cb3-28"><a href="#cb3-28"></a>            <span class="cf">break</span></span>
+<span id="cb3-29"><a href="#cb3-29"></a></span>
+<span id="cb3-30"><a href="#cb3-30"></a>    q_history_updated <span class="op">=</span> []</span>
+<span id="cb3-31"><a href="#cb3-31"></a>    <span class="cf">for</span> q <span class="kw">in</span> q_history:</span>
+<span id="cb3-32"><a href="#cb3-32"></a>        q_history_updated.append(q[<span class="dv">1</span>:<span class="dv">3</span>, :])  <span class="co"># Only keep Q-values for states 1 and 2</span></span>
+<span id="cb3-33"><a href="#cb3-33"></a></span>
+<span id="cb3-34"><a href="#cb3-34"></a>    <span class="cf">return</span> Q, q_history</span>
+<span id="cb3-35"><a href="#cb3-35"></a></span>
+<span id="cb3-36"><a href="#cb3-36"></a></span>
+<span id="cb3-37"><a href="#cb3-37"></a><span class="kw">def</span> greedy_policy_from_Q(Q, terminal_states<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb3-38"><a href="#cb3-38"></a>    nS, nA <span class="op">=</span> Q.shape</span>
+<span id="cb3-39"><a href="#cb3-39"></a>    terminal_states <span class="op">=</span> <span class="bu">set</span>() <span class="cf">if</span> terminal_states <span class="kw">is</span> <span class="va">None</span> <span class="cf">else</span> <span class="bu">set</span>(terminal_states)</span>
+<span id="cb3-40"><a href="#cb3-40"></a>    policy <span class="op">=</span> np.zeros((nS, nA), dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb3-41"><a href="#cb3-41"></a></span>
+<span id="cb3-42"><a href="#cb3-42"></a>    <span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(nS):</span>
+<span id="cb3-43"><a href="#cb3-43"></a>        <span class="cf">if</span> s <span class="kw">in</span> terminal_states:</span>
+<span id="cb3-44"><a href="#cb3-44"></a>            policy[s] <span class="op">=</span> np.ones(nA) <span class="op">/</span> nA</span>
+<span id="cb3-45"><a href="#cb3-45"></a>            <span class="cf">continue</span></span>
+<span id="cb3-46"><a href="#cb3-46"></a>        best_a <span class="op">=</span> np.argmax(Q[s])</span>
+<span id="cb3-47"><a href="#cb3-47"></a>        policy[s, best_a] <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb3-48"><a href="#cb3-48"></a>    <span class="cf">return</span> policy</span>
+<span id="cb3-49"><a href="#cb3-49"></a></span>
+<span id="cb3-50"><a href="#cb3-50"></a></span>
+<span id="cb3-51"><a href="#cb3-51"></a><span class="co"># Run</span></span>
+<span id="cb3-52"><a href="#cb3-52"></a>Q, q_hist <span class="op">=</span> action_value_iteration(env, gamma<span class="op">=</span><span class="fl">0.999</span>, max_iters<span class="op">=</span><span class="dv">10000</span>)</span>
+<span id="cb3-53"><a href="#cb3-53"></a>pi_greedy <span class="op">=</span> greedy_policy_from_Q(Q, terminal_states<span class="op">=</span>{<span class="dv">0</span>, <span class="dv">3</span>})</span>
+<span id="cb3-54"><a href="#cb3-54"></a></span>
+<span id="cb3-55"><a href="#cb3-55"></a><span class="co"># print("Final Q:\n", Q)</span></span>
+<span id="cb3-56"><a href="#cb3-56"></a><span class="co"># print("Greedy policy (rows=states, cols=[L,R]):\n", pi_greedy)</span></span>
+<span id="cb3-57"><a href="#cb3-57"></a></span>
+<span id="cb3-58"><a href="#cb3-58"></a><span class="co"># If you name states/actions as A=1, B=2 and L=0, R=1:</span></span>
+<span id="cb3-59"><a href="#cb3-59"></a><span class="co"># A, B = 1, 2</span></span>
+<span id="cb3-60"><a href="#cb3-60"></a><span class="co"># L, R = 0, 1</span></span>
+<span id="cb3-61"><a href="#cb3-61"></a><span class="co"># print(f"Q(A, L) = {Q[A, L]:.6f}")</span></span>
+<span id="cb3-62"><a href="#cb3-62"></a><span class="co"># print(f"Q(B, L) = {Q[B, L]:.6f}")</span></span>
+<span id="cb3-63"><a href="#cb3-63"></a><span class="co"># print(f"Q(A, R) = {Q[A, R]:.6f}")</span></span>
+<span id="cb3-64"><a href="#cb3-64"></a><span class="co"># print(f"Q(B, R) = {Q[B, R]:.6f}")</span></span>
+<span id="cb3-65"><a href="#cb3-65"></a></span>
+<span id="cb3-66"><a href="#cb3-66"></a><span class="cf">for</span> i, q <span class="kw">in</span> <span class="bu">enumerate</span>(q_hist):</span>
+<span id="cb3-67"><a href="#cb3-67"></a>    <span class="bu">print</span>(<span class="ss">f"Iteration </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">:"</span>)</span>
+<span id="cb3-68"><a href="#cb3-68"></a>    <span class="bu">print</span>(<span class="ss">f"  Q(State 1): </span><span class="sc">{</span>q[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-69"><a href="#cb3-69"></a>    <span class="bu">print</span>(<span class="ss">f"  Q(State 2): </span><span class="sc">{</span>q[<span class="dv">2</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-70"><a href="#cb3-70"></a>    pi_greedy_iter <span class="op">=</span> greedy_policy_from_Q(q, terminal_states<span class="op">=</span>{<span class="dv">0</span>, <span class="dv">3</span>})</span>
+<span id="cb3-71"><a href="#cb3-71"></a>    <span class="bu">print</span>(<span class="ss">f"  Policy(State 1): Action </span><span class="sc">{</span>np<span class="sc">.</span>argmax(pi_greedy_iter[<span class="dv">1</span>])<span class="sc">}</span><span class="ss"> (prob: </span><span class="sc">{</span>pi_greedy_iter[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb3-72"><a href="#cb3-72"></a>    <span class="bu">print</span>(<span class="ss">f"  Policy(State 2): Action </span><span class="sc">{</span>np<span class="sc">.</span>argmax(pi_greedy_iter[<span class="dv">2</span>])<span class="sc">}</span><span class="ss"> (prob: </span><span class="sc">{</span>pi_greedy_iter[<span class="dv">2</span>]<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb3-73"><a href="#cb3-73"></a>    <span class="bu">print</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Iteration 1:
+  Q(State 1): [   0. -100.]
+  Q(State 2): [10090. 10000.]
+  Policy(State 1): Action 0 (prob: [1. 0.])
+  Policy(State 2): Action 0 (prob: [1. 0.])
+
+Iteration 2:
+  Q(State 1): [   0.   9979.91]
+  Q(State 2): [  100. 10000.]
+  Policy(State 1): Action 1 (prob: [0. 1.])
+  Policy(State 2): Action 1 (prob: [0. 1.])
+
+Iteration 3:
+  Q(State 1): [   0. 9890.]
+  Q(State 2): [10069.93009 10000.     ]
+  Policy(State 1): Action 1 (prob: [0. 1.])
+  Policy(State 2): Action 0 (prob: [1. 0.])
+
+Iteration 4:
+  Q(State 1): [   0.         9959.86015991]
+  Q(State 2): [ 9980.11 10000.  ]
+  Policy(State 1): Action 1 (prob: [0. 1.])
+  Policy(State 2): Action 1 (prob: [0. 1.])
+
+Iteration 5:
+  Q(State 1): [   0. 9890.]
+  Q(State 2): [10049.90029975 10000.        ]
+  Policy(State 1): Action 1 (prob: [0. 1.])
+  Policy(State 2): Action 0 (prob: [1. 0.])
+
+Iteration 6:
+  Q(State 1): [   0.         9939.85039945]
+  Q(State 2): [ 9980.11 10000.  ]
+  Policy(State 1): Action 1 (prob: [0. 1.])
+  Policy(State 2): Action 1 (prob: [0. 1.])
+
+Iteration 7:
+  Q(State 1): [   0. 9890.]
+  Q(State 2): [10029.91054905 10000.        ]
+  Policy(State 1): Action 1 (prob: [0. 1.])
+  Policy(State 2): Action 0 (prob: [1. 0.])
+
+Iteration 8:
+  Q(State 1): [   0.        9919.8806385]
+  Q(State 2): [ 9980.11 10000.  ]
+  Policy(State 1): Action 1 (prob: [0. 1.])
+  Policy(State 2): Action 1 (prob: [0. 1.])
+
+Iteration 9:
+  Q(State 1): [   0. 9890.]
+  Q(State 2): [10009.96075786 10000.        ]
+  Policy(State 1): Action 1 (prob: [0. 1.])
+  Policy(State 2): Action 0 (prob: [1. 0.])
+
+Iteration 10:
+  Q(State 1): [   0.         9899.95079711]
+  Q(State 2): [ 9980.11 10000.  ]
+  Policy(State 1): Action 1 (prob: [0. 1.])
+  Policy(State 2): Action 1 (prob: [0. 1.])
+
+Iteration 11:
+  Q(State 1): [   0. 9890.]
+  Q(State 2): [ 9990.05084631 10000.        ]
+  Policy(State 1): Action 1 (prob: [0. 1.])
+  Policy(State 2): Action 1 (prob: [0. 1.])
+
+Iteration 12:
+  Q(State 1): [   0. 9890.]
+  Q(State 2): [ 9980.11 10000.  ]
+  Policy(State 1): Action 1 (prob: [0. 1.])
+  Policy(State 2): Action 1 (prob: [0. 1.])
+
+Iteration 13:
+  Q(State 1): [   0. 9890.]
+  Q(State 2): [ 9980.11 10000.  ]
+  Policy(State 1): Action 1 (prob: [0. 1.])
+  Policy(State 2): Action 1 (prob: [0. 1.])
+</code></pre>
+</div>
+</div>
+</section>
+<section id="iterative-policy-evaluation" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Iterative Policy Evaluation</h1>
+<p><em>To evaluate the greedy policies obtained by value iteration</em></p>
+<div id="ce8b5a39" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">def</span> iterative_policy_evaluation(env, policy_func, gamma<span class="op">=</span><span class="fl">1.0</span>, theta<span class="op">=</span><span class="fl">1e-6</span>, max_iters<span class="op">=</span><span class="dv">10000</span>):</span>
+<span id="cb5-2"><a href="#cb5-2"></a>    nS, nA <span class="op">=</span> env.observation_space.n, env.action_space.n</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    V <span class="op">=</span> np.zeros(nS, dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    terminal_states <span class="op">=</span> {<span class="dv">0</span>, <span class="dv">3</span>}</span>
+<span id="cb5-5"><a href="#cb5-5"></a>    intermediate_values <span class="op">=</span> []</span>
+<span id="cb5-6"><a href="#cb5-6"></a></span>
+<span id="cb5-7"><a href="#cb5-7"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(max_iters):</span>
+<span id="cb5-8"><a href="#cb5-8"></a>        delta <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a>        V_new <span class="op">=</span> V.copy()</span>
+<span id="cb5-10"><a href="#cb5-10"></a></span>
+<span id="cb5-11"><a href="#cb5-11"></a>        <span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(nS):</span>
+<span id="cb5-12"><a href="#cb5-12"></a>            <span class="cf">if</span> s <span class="kw">in</span> terminal_states:</span>
+<span id="cb5-13"><a href="#cb5-13"></a>                <span class="cf">continue</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a></span>
+<span id="cb5-15"><a href="#cb5-15"></a>            probs <span class="op">=</span> policy_func(s)</span>
+<span id="cb5-16"><a href="#cb5-16"></a>            v_temp <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb5-17"><a href="#cb5-17"></a>            <span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(nA):</span>
+<span id="cb5-18"><a href="#cb5-18"></a>                <span class="cf">for</span> p, s_next, r, terminated <span class="kw">in</span> env.P[s][a]:</span>
+<span id="cb5-19"><a href="#cb5-19"></a>                    v_temp <span class="op">+=</span> probs[a] <span class="op">*</span> p <span class="op">*</span> (r <span class="op">+</span> gamma <span class="op">*</span> (<span class="fl">0.0</span> <span class="cf">if</span> terminated <span class="cf">else</span> V[s_next]))</span>
+<span id="cb5-20"><a href="#cb5-20"></a></span>
+<span id="cb5-21"><a href="#cb5-21"></a>            delta <span class="op">=</span> <span class="bu">max</span>(delta, <span class="bu">abs</span>(v_temp <span class="op">-</span> V[s]))</span>
+<span id="cb5-22"><a href="#cb5-22"></a>            V_new[s] <span class="op">=</span> v_temp</span>
+<span id="cb5-23"><a href="#cb5-23"></a></span>
+<span id="cb5-24"><a href="#cb5-24"></a>        intermediate_values.append(V_new.copy())</span>
+<span id="cb5-25"><a href="#cb5-25"></a>        V <span class="op">=</span> V_new</span>
+<span id="cb5-26"><a href="#cb5-26"></a></span>
+<span id="cb5-27"><a href="#cb5-27"></a>        <span class="cf">if</span> delta <span class="op">&lt;</span> theta:</span>
+<span id="cb5-28"><a href="#cb5-28"></a>            <span class="cf">break</span></span>
+<span id="cb5-29"><a href="#cb5-29"></a></span>
+<span id="cb5-30"><a href="#cb5-30"></a>    <span class="cf">return</span> V, intermediate_values</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="03633f75" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">def</span> policy_func_1(state):</span>
+<span id="cb6-2"><a href="#cb6-2"></a>    <span class="cf">if</span> state <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb6-3"><a href="#cb6-3"></a>        <span class="cf">return</span> [<span class="fl">1.0</span>, <span class="fl">0.0</span>]   <span class="co"># always action 0</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>    <span class="cf">if</span> state <span class="op">==</span> <span class="dv">2</span>:</span>
+<span id="cb6-5"><a href="#cb6-5"></a>        <span class="cf">return</span> [<span class="fl">1.0</span>, <span class="fl">0.0</span>]   <span class="co"># always action 0</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>    <span class="cf">return</span> [<span class="fl">0.5</span>, <span class="fl">0.5</span>]       <span class="co"># unused for terminal states</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="kw">def</span> policy_func_2(state):</span>
+<span id="cb6-9"><a href="#cb6-9"></a>    <span class="cf">if</span> state <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb6-10"><a href="#cb6-10"></a>        <span class="cf">return</span> [<span class="fl">0.0</span>, <span class="fl">1.0</span>]   <span class="co"># always action 1</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a>    <span class="cf">if</span> state <span class="op">==</span> <span class="dv">2</span>:</span>
+<span id="cb6-12"><a href="#cb6-12"></a>        <span class="cf">return</span> [<span class="fl">0.0</span>, <span class="fl">1.0</span>]   <span class="co"># always action 1</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a>    <span class="cf">return</span> [<span class="fl">0.5</span>, <span class="fl">0.5</span>]       <span class="co"># unused for terminal states</span></span>
+<span id="cb6-14"><a href="#cb6-14"></a></span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="kw">def</span> policy_func_3(state):</span>
+<span id="cb6-16"><a href="#cb6-16"></a>    <span class="cf">if</span> state <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb6-17"><a href="#cb6-17"></a>        <span class="cf">return</span> [<span class="fl">0.0</span>, <span class="fl">1.0</span>]   <span class="co"># always action 1</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a>    <span class="cf">if</span> state <span class="op">==</span> <span class="dv">2</span>:</span>
+<span id="cb6-19"><a href="#cb6-19"></a>        <span class="cf">return</span> [<span class="fl">1.0</span>, <span class="fl">0.0</span>]   <span class="co"># always action 0</span></span>
+<span id="cb6-20"><a href="#cb6-20"></a>    <span class="cf">return</span> [<span class="fl">0.5</span>, <span class="fl">0.5</span>]       <span class="co"># unused for terminal states</span></span>
+<span id="cb6-21"><a href="#cb6-21"></a></span>
+<span id="cb6-22"><a href="#cb6-22"></a><span class="kw">def</span> policy_func_4(state):</span>
+<span id="cb6-23"><a href="#cb6-23"></a>    <span class="cf">if</span> state <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb6-24"><a href="#cb6-24"></a>        <span class="cf">return</span> [<span class="fl">1.0</span>, <span class="fl">0.0</span>]   <span class="co"># always action 0</span></span>
+<span id="cb6-25"><a href="#cb6-25"></a>    <span class="cf">if</span> state <span class="op">==</span> <span class="dv">2</span>:</span>
+<span id="cb6-26"><a href="#cb6-26"></a>        <span class="cf">return</span> [<span class="fl">0.0</span>, <span class="fl">1.0</span>]   <span class="co"># always action 1</span></span>
+<span id="cb6-27"><a href="#cb6-27"></a>    <span class="cf">return</span> [<span class="fl">0.5</span>, <span class="fl">0.5</span>]       <span class="co"># unused for terminal states</span></span>
+<span id="cb6-28"><a href="#cb6-28"></a></span>
+<span id="cb6-29"><a href="#cb6-29"></a>V1, intermediate_values_1 <span class="op">=</span> iterative_policy_evaluation(env, policy_func_1, gamma<span class="op">=</span><span class="fl">0.999</span>)</span>
+<span id="cb6-30"><a href="#cb6-30"></a>V2, intermediate_values_2 <span class="op">=</span> iterative_policy_evaluation(env, policy_func_2, gamma<span class="op">=</span><span class="fl">0.999</span>)</span>
+<span id="cb6-31"><a href="#cb6-31"></a>V3, intermediate_values_3 <span class="op">=</span> iterative_policy_evaluation(env, policy_func_3, gamma<span class="op">=</span><span class="fl">0.999</span>)</span>
+<span id="cb6-32"><a href="#cb6-32"></a>V4, intermediate_values_4 <span class="op">=</span> iterative_policy_evaluation(env, policy_func_4, gamma<span class="op">=</span><span class="fl">0.999</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="25bf4b89" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="bu">print</span>(<span class="st">"Policy 1 (Always action 0):"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="cf">for</span> values <span class="kw">in</span> V1:</span>
+<span id="cb7-3"><a href="#cb7-3"></a>    <span class="bu">print</span>(values)</span>
+<span id="cb7-4"><a href="#cb7-4"></a></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="bu">print</span>(<span class="st">"---"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6"></a></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="bu">print</span>(<span class="st">"Policy 2 (Always action 1):"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="cf">for</span> values <span class="kw">in</span> V2:</span>
+<span id="cb7-9"><a href="#cb7-9"></a>    <span class="bu">print</span>(values)</span>
+<span id="cb7-10"><a href="#cb7-10"></a></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="bu">print</span>(<span class="st">"---"</span>)</span>
+<span id="cb7-12"><a href="#cb7-12"></a></span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="bu">print</span>(<span class="st">"Policy 3 (Action 1 for state 1, Action 0 for state 2):"</span>)</span>
+<span id="cb7-14"><a href="#cb7-14"></a><span class="cf">for</span> values <span class="kw">in</span> V3:</span>
+<span id="cb7-15"><a href="#cb7-15"></a>    <span class="bu">print</span>(values)</span>
+<span id="cb7-16"><a href="#cb7-16"></a></span>
+<span id="cb7-17"><a href="#cb7-17"></a><span class="bu">print</span>(<span class="st">"---"</span>)</span>
+<span id="cb7-18"><a href="#cb7-18"></a></span>
+<span id="cb7-19"><a href="#cb7-19"></a><span class="bu">print</span>(<span class="st">"Policy 4 (Action 0 for state 1, Action 1 for state 2):"</span>)</span>
+<span id="cb7-20"><a href="#cb7-20"></a><span class="cf">for</span> values <span class="kw">in</span> V4:</span>
+<span id="cb7-21"><a href="#cb7-21"></a>    <span class="bu">print</span>(values)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Policy 1 (Always action 0):
+0.0
+0.0
+100.0
+0.0
+---
+Policy 2 (Always action 1):
+0.0
+9890.0
+10000.0
+0.0
+---
+Policy 3 (Action 1 for state 1, Action 0 for state 2):
+0.0
+-50.02275270905568
+50.02275270905568
+0.0
+---
+Policy 4 (Action 0 for state 1, Action 1 for state 2):
+0.0
+0.0
+10000.0
+0.0</code></pre>
+</div>
+</div>
+</section>
+<section id="explanation" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Explanation</h1>
+<section id="description-of-the-mdp" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="description-of-the-mdp"><span class="header-section-number">4.1</span> Description of the MDP</h2>
+<p>I have constructed an MDP with 4 states: 0, 1, 2, and 3. State 0 and State 3 are terminal states. - From State 1, taking Action 0 (Left) leads to State 0 with a reward of 0, while taking Action 1 (Right) leads to State 2 with a reward of -100. - From State 2, taking Action 0 (Left) leads back to State 1 with a reward of 100, while taking Action 1 (Right) leads to State 3 with a reward of 10,000.</p>
+</section>
+<section id="value-iteration-and-policy-evaluation" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="value-iteration-and-policy-evaluation"><span class="header-section-number">4.2</span> Value Iteration and Policy Evaluation</h2>
+<p>Then, using action-value iteration, we can compute the value functions for each state starting with initial values.</p>
+<section id="initital-values" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="initital-values"><span class="header-section-number">4.2.1</span> Initital Values</h3>
+<ul>
+<li><span class="math inline">\(Q[1, 0] = 10000.0\)</span></li>
+<li><span class="math inline">\(Q[1, 1] = 0\)</span></li>
+<li><span class="math inline">\(Q[2, 0] = 0\)</span></li>
+<li><span class="math inline">\(Q[2, 1] = -100.0\)</span></li>
+<li><span class="math inline">\(Q[0, 0] = 0\)</span></li>
+<li><span class="math inline">\(Q[0, 1] = 0\)</span></li>
+<li><span class="math inline">\(Q[3, 0] = 0\)</span></li>
+<li><span class="math inline">\(Q[3, 1] = 0\)</span></li>
+</ul>
+</section>
+<section id="optimal-policy" class="level3" data-number="4.2.2">
+<h3 data-number="4.2.2" class="anchored" data-anchor-id="optimal-policy"><span class="header-section-number">4.2.2</span> Optimal Policy</h3>
+<p>The optimal policy, from by observation of the reward structure, would be: - <span class="math inline">\(\pi(1) = 1\)</span> (Right) - <span class="math inline">\(\pi(2) = 1\)</span> (Right)</p>
+</section>
+<section id="iterations" class="level3" data-number="4.2.3">
+<h3 data-number="4.2.3" class="anchored" data-anchor-id="iterations"><span class="header-section-number">4.2.3</span> Iterations</h3>
+<p>Now, let’s consider the greedy policies <span class="math inline">\(\pi_i\)</span> and <span class="math inline">\(\pi_{i+1}\)</span> obtained from value iteration.</p>
+<p><strong>Iteration 1:</strong> - <span class="math inline">\(\pi_1(1) = 0\)</span> (Left) &amp; <span class="math inline">\(\pi_1(2) = 0\)</span> (Left) - <span class="math inline">\(v_{\pi_1}(1) = 0\)</span> (since it leads to terminal state with reward 0) - <span class="math inline">\(v_{\pi_1}(2) = 100\)</span> (since it leads back to state 1 with reward 100)</p>
+<p><strong>Iteration 2:</strong> - <span class="math inline">\(\pi_2(1) = 1\)</span> (Right) &amp; <span class="math inline">\(\pi_2(2) = 1\)</span> (Right) - <span class="math inline">\(v_{\pi_2}(1) = 9890\)</span> - <span class="math inline">\(v_{\pi_2}(2) = 10000\)</span> (since it leads to terminal state with reward 10,000)</p>
+<p><strong>Iteration 3:</strong> - <span class="math inline">\(\pi_3(1) = 0\)</span> (Right) &amp; <span class="math inline">\(\pi_3(2) = 1\)</span> (Left) - <span class="math inline">\(v_{\pi_3}(1) = -50\)</span> - <span class="math inline">\(v_{\pi_3}(2) = 50\)</span></p>
+<p><strong>Iteration 4:</strong> - <span class="math inline">\(\pi_4(1) = 1\)</span> (Right) &amp; <span class="math inline">\(\pi_4(2) = 1\)</span> (Right) - <span class="math inline">\(v_{\pi_4}(1) = 9890\)</span> - <span class="math inline">\(v_{\pi_4}(2) = 10000\)</span></p>
+</section>
+</section>
+<section id="conclusion" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">4.3</span> <strong>Conclusion</strong></h2>
+<p>I have shown that policies obtained from value iteration needn’t be monotonically improving. In this example, <span class="math inline">\(\pi_3\)</span> is not better than <span class="math inline">\(\pi_2\)</span> because <span class="math inline">\(v_{\pi_3} &lt; v_{\pi_2}\)</span>. Therefore, the statement <span class="math inline">\(\pi_{i} \leq \pi_{i+1}\)</span> is false.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
