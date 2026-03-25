@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hanani Bathina">
+
+<title>Temporal-Difference Control in Mountain Car</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="assignment_files/libs/clipboard/clipboard.min.js"></script>
+<script src="assignment_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="assignment_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="assignment_files/libs/quarto-html/popper.min.js"></script>
+<script src="assignment_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="assignment_files/libs/quarto-html/anchor.min.js"></script>
+<link href="assignment_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="assignment_files/libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="assignment_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="assignment_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="assignment_files/libs/bootstrap/bootstrap-430579b502d59c3fdd64942a7b2a01a9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#assignment-temporal-difference-control-in-mountain-car" id="toc-assignment-temporal-difference-control-in-mountain-car" class="nav-link active" data-scroll-target="#assignment-temporal-difference-control-in-mountain-car"><span class="header-section-number">1</span> Assignment: Temporal-Difference Control in Mountain Car</a></li>
+  <li><a href="#environment-mountain-car" id="toc-environment-mountain-car" class="nav-link" data-scroll-target="#environment-mountain-car"><span class="header-section-number">2</span> Environment: Mountain Car</a>
+  <ul class="collapse">
+  <li><a href="#observation-space" id="toc-observation-space" class="nav-link" data-scroll-target="#observation-space"><span class="header-section-number">2.1</span> Observation Space</a></li>
+  <li><a href="#action-space" id="toc-action-space" class="nav-link" data-scroll-target="#action-space"><span class="header-section-number">2.2</span> Action Space</a></li>
+  <li><a href="#transition-dynamics" id="toc-transition-dynamics" class="nav-link" data-scroll-target="#transition-dynamics"><span class="header-section-number">2.3</span> Transition Dynamics</a></li>
+  <li><a href="#reward" id="toc-reward" class="nav-link" data-scroll-target="#reward"><span class="header-section-number">2.4</span> Reward</a></li>
+  <li><a href="#starting-state" id="toc-starting-state" class="nav-link" data-scroll-target="#starting-state"><span class="header-section-number">2.5</span> Starting State</a></li>
+  <li><a href="#episode-end" id="toc-episode-end" class="nav-link" data-scroll-target="#episode-end"><span class="header-section-number">2.6</span> Episode End</a></li>
+  </ul></li>
+  <li><a href="#function-approximation" id="toc-function-approximation" class="nav-link" data-scroll-target="#function-approximation"><span class="header-section-number">3</span> Function Approximation</a>
+  <ul class="collapse">
+  <li><a href="#utils" id="toc-utils" class="nav-link" data-scroll-target="#utils"><span class="header-section-number">3.0.1</span> Utils</a></li>
+  </ul></li>
+  <li><a href="#sarsa-on-policy-td-control-using-function-approximation" id="toc-sarsa-on-policy-td-control-using-function-approximation" class="nav-link" data-scroll-target="#sarsa-on-policy-td-control-using-function-approximation"><span class="header-section-number">4</span> SARSA: On-Policy TD Control using Function Approximation</a>
+  <ul class="collapse">
+  <li><a href="#pseudocode" id="toc-pseudocode" class="nav-link" data-scroll-target="#pseudocode"><span class="header-section-number">4.0.1</span> Pseudocode</a></li>
+  </ul></li>
+  <li><a href="#q-learning-off-policy-td-control-using-function-approximation" id="toc-q-learning-off-policy-td-control-using-function-approximation" class="nav-link" data-scroll-target="#q-learning-off-policy-td-control-using-function-approximation"><span class="header-section-number">5</span> Q-Learning: Off-Policy TD Control using Function Approximation</a>
+  <ul class="collapse">
+  <li><a href="#pseudocode-1" id="toc-pseudocode-1" class="nav-link" data-scroll-target="#pseudocode-1"><span class="header-section-number">5.0.1</span> Pseudocode</a></li>
+  </ul></li>
+  <li><a href="#experimentation-and-analysis" id="toc-experimentation-and-analysis" class="nav-link" data-scroll-target="#experimentation-and-analysis"><span class="header-section-number">6</span> Experimentation and Analysis</a>
+  <ul class="collapse">
+  <li><a href="#run-experiments" id="toc-run-experiments" class="nav-link" data-scroll-target="#run-experiments"><span class="header-section-number">6.1</span> Run Experiments</a></li>
+  <li><a href="#plot-learning-curves" id="toc-plot-learning-curves" class="nav-link" data-scroll-target="#plot-learning-curves"><span class="header-section-number">6.2</span> Plot Learning Curves</a></li>
+  <li><a href="#videos" id="toc-videos" class="nav-link" data-scroll-target="#videos"><span class="header-section-number">6.3</span> Videos</a>
+  <ul class="collapse">
+  <li><a href="#sarsa-videos" id="toc-sarsa-videos" class="nav-link" data-scroll-target="#sarsa-videos"><span class="header-section-number">6.3.1</span> SARSA Videos</a></li>
+  <li><a href="#q-learning-videos" id="toc-q-learning-videos" class="nav-link" data-scroll-target="#q-learning-videos"><span class="header-section-number">6.3.2</span> Q-Learning Videos</a></li>
+  </ul></li>
+  <li><a href="#compare-epsilon-schedules" id="toc-compare-epsilon-schedules" class="nav-link" data-scroll-target="#compare-epsilon-schedules"><span class="header-section-number">6.4</span> Compare epsilon schedules</a></li>
+  <li><a href="#sensitivity-analysis" id="toc-sensitivity-analysis" class="nav-link" data-scroll-target="#sensitivity-analysis"><span class="header-section-number">6.5</span> Sensitivity Analysis</a></li>
+  </ul></li>
+  <li><a href="#tasks" id="toc-tasks" class="nav-link" data-scroll-target="#tasks"><span class="header-section-number">7</span> Tasks</a>
+  <ul class="collapse">
+  <li><a href="#task-1" id="toc-task-1" class="nav-link" data-scroll-target="#task-1"><span class="header-section-number">7.1</span> Task 1</a></li>
+  <li><a href="#task-2" id="toc-task-2" class="nav-link" data-scroll-target="#task-2"><span class="header-section-number">7.2</span> Task 2</a></li>
+  <li><a href="#task-3" id="toc-task-3" class="nav-link" data-scroll-target="#task-3"><span class="header-section-number">7.3</span> Task 3</a></li>
+  <li><a href="#task-4" id="toc-task-4" class="nav-link" data-scroll-target="#task-4"><span class="header-section-number">7.4</span> Task 4</a></li>
+  </ul></li>
+  <li><a href="#analysis-questions" id="toc-analysis-questions" class="nav-link" data-scroll-target="#analysis-questions"><span class="header-section-number">8</span> Analysis Questions</a>
+  <ul class="collapse">
+  <li><a href="#question-1" id="toc-question-1" class="nav-link" data-scroll-target="#question-1"><span class="header-section-number">8.1</span> Question 1</a></li>
+  <li><a href="#question-2" id="toc-question-2" class="nav-link" data-scroll-target="#question-2"><span class="header-section-number">8.2</span> Question 2</a></li>
+  <li><a href="#question-3" id="toc-question-3" class="nav-link" data-scroll-target="#question-3"><span class="header-section-number">8.3</span> Question 3</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Temporal-Difference Control in Mountain Car</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Hanani Bathina </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="assignment-temporal-difference-control-in-mountain-car" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Assignment: Temporal-Difference Control in Mountain Car</h1>
+<p><em>Study and Compare On-Policy and Off-Policy TD Control Methods using Continuous-State RL Environment</em></p>
+<div id="e19dba1b" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> gymnasium <span class="im">as</span> gym</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co"># from gymnasium.wrappers import RecordVideo, RecordEpisodeStatistics</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="im">from</span> tqdm.auto <span class="im">import</span> tqdm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>/home/hegemon/RL-Assignments/env/lib/python3.12/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm</code></pre>
+</div>
+</div>
+</section>
+<section id="environment-mountain-car" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Environment: Mountain Car</h1>
+<p>Determinstic MDP that consists of a car placed stochastically at the bottom of a sinusoidal valley.</p>
+<section id="observation-space" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="observation-space"><span class="header-section-number">2.1</span> Observation Space</h2>
+<p><code>ndarray</code> of shape <code>(2,)</code> with the following values: - <code>ndarray[0]</code>: Car’s position, a float in the range <code>[-1.2, 0.6]</code> - <code>ndarray[1]</code>: Car’s velocity, a float in the range <code>[-0.07, 0.07]</code></p>
+</section>
+<section id="action-space" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="action-space"><span class="header-section-number">2.2</span> Action Space</h2>
+<p><code>Discrete(3)</code> with the following actions: - <code>0</code>: Accelerate to the left - <code>1</code>: Don’t accelerate - <code>2</code>: Accelerate to the right</p>
+</section>
+<section id="transition-dynamics" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="transition-dynamics"><span class="header-section-number">2.3</span> Transition Dynamics</h2>
+<p>The car’s position and velocity are updated according to the following equations:</p>
+<pre><code>velocity = velocity + (action - 1) * 0.001 - cos(3 * position) * (0.0025)
+position = position + velocity
+position = clip(position, -1.2, 0.6)
+velocity = clip(velocity, -0.07, 0.07)</code></pre>
+<p>Upon collision with either boundary, the car’s velocity is reset to <code>0</code>.</p>
+</section>
+<section id="reward" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="reward"><span class="header-section-number">2.4</span> Reward</h2>
+<p>Reward of <code>-1</code> is given at every time step until the car reaches the goal. The goal is to reach the flag at position <code>0.5</code> or greater.</p>
+</section>
+<section id="starting-state" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="starting-state"><span class="header-section-number">2.5</span> Starting State</h2>
+<p>The car starts at a random position between <code>-0.6</code> and <code>-0.4</code> with zero velocity.</p>
+</section>
+<section id="episode-end" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="episode-end"><span class="header-section-number">2.6</span> Episode End</h2>
+<p>Episode ends when: 1. The car reaches the goal (position <code>&gt;= 0.5</code>). 2. The car fails to reach the goal within <code>200</code> time steps.</p>
+<div id="4d919e67" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>NUM_EPISODES <span class="op">=</span> <span class="dv">200</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a>env <span class="op">=</span> gym.make(<span class="st">"MountainCar-v0"</span>, render_mode<span class="op">=</span><span class="st">"rgb_array"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>spec <span class="op">=</span> env.spec</span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="bu">print</span>(<span class="ss">f"Observation Space: </span><span class="sc">{</span>env<span class="sc">.</span>observation_space<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="bu">print</span>(<span class="ss">f"Action Space: </span><span class="sc">{</span>env<span class="sc">.</span>action_space<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="bu">print</span>(<span class="ss">f"Max Episode Steps: </span><span class="sc">{</span>spec<span class="sc">.</span>max_episode_steps<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="bu">print</span>(<span class="ss">f"Lower Bounds: </span><span class="sc">{</span>env<span class="sc">.</span>observation_space<span class="sc">.</span>low<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="bu">print</span>(<span class="ss">f"Upper Bounds: </span><span class="sc">{</span>env<span class="sc">.</span>observation_space<span class="sc">.</span>high<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-10"><a href="#cb4-10"></a>env.close()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Observation Space: Box([-1.2  -0.07], [0.6  0.07], (2,), float32)
+Action Space: Discrete(3)
+Max Episode Steps: 200
+Lower Bounds: [-1.2  -0.07]
+Upper Bounds: [0.6  0.07]</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="function-approximation" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Function Approximation</h1>
+<p>For both algorithms, I’ll use a linear function approximator for the action-value function: <span class="math display">\[\hat{q}(s, a; w) = w^T \phi(s, a)\]</span> where <span class="math inline">\(\phi(s, a)\)</span> is a feature vector representing the state-action pair, and <span class="math inline">\(w\)</span> is the weight vector to be learned.</p>
+<p>The feature vector <span class="math inline">\(\phi(s, a)\)</span> will be constructed using tile coding to discretize the continuous state space into a binary feature representation. Each tile will correspond to a specific region of the state space, and the feature vector will have a value of <code>1</code> for the active tiles corresponding to the current state-action pair and <code>0</code> for all other tiles.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="tile_coding.png" class="img-fluid figure-img"></p>
+<figcaption>Tile Coding Example</figcaption>
+</figure>
+</div>
+<div id="995807cb" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">class</span> TileCoder:</span>
+<span id="cb6-2"><a href="#cb6-2"></a>    <span class="co">"""</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co">    Tile coder for linear function approximation in continuous-state RL.</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co">    """</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a></span>
+<span id="cb6-6"><a href="#cb6-6"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, low, high, n_actions, n_tilings<span class="op">=</span><span class="dv">8</span>, bins<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>)):</span>
+<span id="cb6-7"><a href="#cb6-7"></a>        <span class="co"># Store state bounds as float arrays for stable arithmetic.</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a>        <span class="va">self</span>.low <span class="op">=</span> np.asarray(low, dtype<span class="op">=</span>np.float64)</span>
+<span id="cb6-9"><a href="#cb6-9"></a>        <span class="va">self</span>.high <span class="op">=</span> np.asarray(high, dtype<span class="op">=</span>np.float64)</span>
+<span id="cb6-10"><a href="#cb6-10"></a></span>
+<span id="cb6-11"><a href="#cb6-11"></a>        <span class="co"># Number of discrete actions in the environment (MountainCar: 3).</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a>        <span class="va">self</span>.n_actions <span class="op">=</span> n_actions</span>
+<span id="cb6-13"><a href="#cb6-13"></a></span>
+<span id="cb6-14"><a href="#cb6-14"></a>        <span class="co"># Number of overlapping tilings. More tilings -&gt; smoother generalization,</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a>        <span class="co"># but larger feature vector.</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a>        <span class="va">self</span>.n_tilings <span class="op">=</span> n_tilings</span>
+<span id="cb6-17"><a href="#cb6-17"></a></span>
+<span id="cb6-18"><a href="#cb6-18"></a>        <span class="co"># Number of bins per state dimension inside each tiling.</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a>        <span class="co"># For MountainCar with 2D state, bins=(8, 8). Since we care for both position and velocity, we use equal number of bins for each dimension.</span></span>
+<span id="cb6-20"><a href="#cb6-20"></a>        <span class="va">self</span>.bins <span class="op">=</span> np.asarray(bins, dtype<span class="op">=</span>np.int32)</span>
+<span id="cb6-21"><a href="#cb6-21"></a></span>
+<span id="cb6-22"><a href="#cb6-22"></a>        <span class="co"># Number of tiles in a single tiling (product of bins across dimensions).</span></span>
+<span id="cb6-23"><a href="#cb6-23"></a>        <span class="va">self</span>.tiles_per_tiling <span class="op">=</span> <span class="bu">int</span>(np.prod(<span class="va">self</span>.bins))</span>
+<span id="cb6-24"><a href="#cb6-24"></a></span>
+<span id="cb6-25"><a href="#cb6-25"></a>        <span class="co"># Per-action feature count: each action has its own tile-coded block.</span></span>
+<span id="cb6-26"><a href="#cb6-26"></a>        <span class="va">self</span>.features_per_action <span class="op">=</span> <span class="va">self</span>.n_tilings <span class="op">*</span> <span class="va">self</span>.tiles_per_tiling</span>
+<span id="cb6-27"><a href="#cb6-27"></a></span>
+<span id="cb6-28"><a href="#cb6-28"></a>        <span class="co"># Total feature count across all actions.</span></span>
+<span id="cb6-29"><a href="#cb6-29"></a>        <span class="va">self</span>.total_features <span class="op">=</span> <span class="va">self</span>.n_actions <span class="op">*</span> <span class="va">self</span>.features_per_action</span>
+<span id="cb6-30"><a href="#cb6-30"></a></span>
+<span id="cb6-31"><a href="#cb6-31"></a>        <span class="co"># Tile "width" in each state dimension.</span></span>
+<span id="cb6-32"><a href="#cb6-32"></a>        <span class="co"># Using (bins - 1) ensures full span from low to high is covered.</span></span>
+<span id="cb6-33"><a href="#cb6-33"></a>        <span class="va">self</span>.tile_size <span class="op">=</span> (<span class="va">self</span>.high <span class="op">-</span> <span class="va">self</span>.low) <span class="op">/</span> (<span class="va">self</span>.bins <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb6-34"><a href="#cb6-34"></a></span>
+<span id="cb6-35"><a href="#cb6-35"></a>        <span class="co"># Asymmetric offsets per tiling (The book suggests doing assymetrical offsets to avoid diagonal tiling patterns that can lead to poor generalization.):</span></span>
+<span id="cb6-36"><a href="#cb6-36"></a>        <span class="co"># - Shift each tiling differently so states activate different tiles across tilings.</span></span>
+<span id="cb6-37"><a href="#cb6-37"></a>        multipliers <span class="op">=</span> np.array([<span class="fl">1.0</span>, np.sqrt(<span class="dv">2</span>) <span class="op">-</span> <span class="fl">1.0</span>])</span>
+<span id="cb6-38"><a href="#cb6-38"></a></span>
+<span id="cb6-39"><a href="#cb6-39"></a>        <span class="va">self</span>.offsets <span class="op">=</span> []</span>
+<span id="cb6-40"><a href="#cb6-40"></a>        <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.n_tilings):</span>
+<span id="cb6-41"><a href="#cb6-41"></a>            <span class="co"># Fraction increases with tiling index (1/n, 2/n, ..., n/n).</span></span>
+<span id="cb6-42"><a href="#cb6-42"></a>            frac <span class="op">=</span> (k <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> <span class="va">self</span>.n_tilings</span>
+<span id="cb6-43"><a href="#cb6-43"></a></span>
+<span id="cb6-44"><a href="#cb6-44"></a>            <span class="co"># Compute per-dimension offset, wrap into [0, 1) with modulo,</span></span>
+<span id="cb6-45"><a href="#cb6-45"></a>            <span class="co"># then scale by tile size to convert to state units.</span></span>
+<span id="cb6-46"><a href="#cb6-46"></a>            off <span class="op">=</span> ((multipliers <span class="op">*</span> frac) <span class="op">%</span> <span class="fl">1.0</span>) <span class="op">*</span> <span class="va">self</span>.tile_size</span>
+<span id="cb6-47"><a href="#cb6-47"></a>            <span class="va">self</span>.offsets.append(off)</span>
+<span id="cb6-48"><a href="#cb6-48"></a></span>
+<span id="cb6-49"><a href="#cb6-49"></a>        <span class="co"># Shape: (n_tilings, state_dim)</span></span>
+<span id="cb6-50"><a href="#cb6-50"></a>        <span class="va">self</span>.offsets <span class="op">=</span> np.asarray(<span class="va">self</span>.offsets)</span>
+<span id="cb6-51"><a href="#cb6-51"></a></span>
+<span id="cb6-52"><a href="#cb6-52"></a>    <span class="kw">def</span> get_active_features(<span class="va">self</span>, state, action):</span>
+<span id="cb6-53"><a href="#cb6-53"></a>        <span class="co">"""</span></span>
+<span id="cb6-54"><a href="#cb6-54"></a><span class="co">        Return indices of active features for a given (state, action).</span></span>
+<span id="cb6-55"><a href="#cb6-55"></a></span>
+<span id="cb6-56"><a href="#cb6-56"></a><span class="co">        Output:</span></span>
+<span id="cb6-57"><a href="#cb6-57"></a><span class="co">            active: np.ndarray of shape (n_tilings,), dtype=int32</span></span>
+<span id="cb6-58"><a href="#cb6-58"></a><span class="co">                    One active feature index per tiling.</span></span>
+<span id="cb6-59"><a href="#cb6-59"></a><span class="co">        """</span></span>
+<span id="cb6-60"><a href="#cb6-60"></a>        s <span class="op">=</span> np.clip(np.asarray(state, dtype<span class="op">=</span>np.float64), <span class="va">self</span>.low, <span class="va">self</span>.high)</span>
+<span id="cb6-61"><a href="#cb6-61"></a></span>
+<span id="cb6-62"><a href="#cb6-62"></a>        <span class="co"># Will hold one global feature index per tiling.</span></span>
+<span id="cb6-63"><a href="#cb6-63"></a>        active <span class="op">=</span> np.empty(<span class="va">self</span>.n_tilings, dtype<span class="op">=</span>np.int32)</span>
+<span id="cb6-64"><a href="#cb6-64"></a></span>
+<span id="cb6-65"><a href="#cb6-65"></a>        <span class="co"># Offset into the chosen action's feature block.</span></span>
+<span id="cb6-66"><a href="#cb6-66"></a>        action_base <span class="op">=</span> action <span class="op">*</span> <span class="va">self</span>.features_per_action</span>
+<span id="cb6-67"><a href="#cb6-67"></a></span>
+<span id="cb6-68"><a href="#cb6-68"></a>        <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.n_tilings):</span>
+<span id="cb6-69"><a href="#cb6-69"></a>            <span class="co"># Shift state by this tiling's offset, then convert to tile coordinates.</span></span>
+<span id="cb6-70"><a href="#cb6-70"></a>            coords <span class="op">=</span> ((s <span class="op">-</span> <span class="va">self</span>.low <span class="op">+</span> <span class="va">self</span>.offsets[t]) <span class="op">/</span> <span class="va">self</span>.tile_size).astype(np.int32)</span>
+<span id="cb6-71"><a href="#cb6-71"></a></span>
+<span id="cb6-72"><a href="#cb6-72"></a>            <span class="co"># Ensure coordinates stay inside valid bin range.</span></span>
+<span id="cb6-73"><a href="#cb6-73"></a>            coords <span class="op">=</span> np.clip(coords, <span class="dv">0</span>, <span class="va">self</span>.bins <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb6-74"><a href="#cb6-74"></a></span>
+<span id="cb6-75"><a href="#cb6-75"></a>            <span class="co"># Convert multi-dimensional tile coords -&gt; flat index within this tiling.</span></span>
+<span id="cb6-76"><a href="#cb6-76"></a>            flat <span class="op">=</span> <span class="va">self</span>.bins[<span class="dv">0</span>] <span class="op">*</span> coords[<span class="dv">0</span>] <span class="op">+</span> coords[<span class="dv">1</span>]</span>
+<span id="cb6-77"><a href="#cb6-77"></a></span>
+<span id="cb6-78"><a href="#cb6-78"></a>            <span class="co"># Build global feature index:</span></span>
+<span id="cb6-79"><a href="#cb6-79"></a>            <span class="co"># action block + tiling block + flat tile index.</span></span>
+<span id="cb6-80"><a href="#cb6-80"></a>            active[t] <span class="op">=</span> action_base <span class="op">+</span> t <span class="op">*</span> <span class="va">self</span>.tiles_per_tiling <span class="op">+</span> flat</span>
+<span id="cb6-81"><a href="#cb6-81"></a></span>
+<span id="cb6-82"><a href="#cb6-82"></a>        <span class="cf">return</span> active</span>
+<span id="cb6-83"><a href="#cb6-83"></a></span>
+<span id="cb6-84"><a href="#cb6-84"></a></span>
+<span id="cb6-85"><a href="#cb6-85"></a><span class="co"># Instantiate tile coder using environment bounds and action count.</span></span>
+<span id="cb6-86"><a href="#cb6-86"></a>tc <span class="op">=</span> TileCoder(</span>
+<span id="cb6-87"><a href="#cb6-87"></a>    low<span class="op">=</span>env.observation_space.low,</span>
+<span id="cb6-88"><a href="#cb6-88"></a>    high<span class="op">=</span>env.observation_space.high,</span>
+<span id="cb6-89"><a href="#cb6-89"></a>    n_actions<span class="op">=</span>env.action_space.n</span>
+<span id="cb6-90"><a href="#cb6-90"></a>)</span>
+<span id="cb6-91"><a href="#cb6-91"></a></span>
+<span id="cb6-92"><a href="#cb6-92"></a><span class="co"># Example query: active features for a sample state/action pair.</span></span>
+<span id="cb6-93"><a href="#cb6-93"></a>active_features <span class="op">=</span> tc.get_active_features(state<span class="op">=</span>[<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.02</span>], action<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb6-94"><a href="#cb6-94"></a><span class="bu">print</span>(<span class="ss">f"Active feature indices for state [-0.5, 0.02] and action 1: </span><span class="sc">{</span>active_features<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-95"><a href="#cb6-95"></a><span class="cf">assert</span> active_features.shape <span class="op">==</span> (tc.n_tilings,)</span>
+<span id="cb6-96"><a href="#cb6-96"></a><span class="cf">assert</span> np.<span class="bu">all</span>(active_features <span class="op">&gt;=</span> <span class="dv">0</span>) <span class="kw">and</span> np.<span class="bu">all</span>(active_features <span class="op">&lt;</span> tc.total_features)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Active feature indices for state [-0.5, 0.02] and action 1: [532 596 668 732 796 860 924 980]</code></pre>
+</div>
+</div>
+<section id="utils" class="level3" data-number="3.0.1">
+<h3 data-number="3.0.1" class="anchored" data-anchor-id="utils"><span class="header-section-number">3.0.1</span> Utils</h3>
+<div id="b2a2fe5d" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># q(s, a) = sum(weights[active_features])</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="kw">def</span> q_value(weights, tc, state, action):</span>
+<span id="cb8-4"><a href="#cb8-4"></a>    idx <span class="op">=</span> tc.get_active_features(state, action)</span>
+<span id="cb8-5"><a href="#cb8-5"></a>    <span class="cf">return</span> weights[idx].<span class="bu">sum</span>()</span>
+<span id="cb8-6"><a href="#cb8-6"></a></span>
+<span id="cb8-7"><a href="#cb8-7"></a></span>
+<span id="cb8-8"><a href="#cb8-8"></a></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="kw">def</span> epsilon_greedy(weights, tc, state, epsilon, rng):</span>
+<span id="cb8-10"><a href="#cb8-10"></a>    <span class="cf">if</span> rng.random() <span class="op">&lt;</span> epsilon:</span>
+<span id="cb8-11"><a href="#cb8-11"></a>        <span class="cf">return</span> rng.integers(tc.n_actions)</span>
+<span id="cb8-12"><a href="#cb8-12"></a>    q_vals <span class="op">=</span> np.array([q_value(weights, tc, state, a) <span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(tc.n_actions)])</span>
+<span id="cb8-13"><a href="#cb8-13"></a>    best <span class="op">=</span> np.flatnonzero(q_vals <span class="op">==</span> q_vals.<span class="bu">max</span>())</span>
+<span id="cb8-14"><a href="#cb8-14"></a>    <span class="cf">return</span> <span class="bu">int</span>(rng.choice(best))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="09f36f7a" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Feature-map / algorithm hyperparameters</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>n_tilings <span class="op">=</span> <span class="dv">8</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>bins <span class="op">=</span> (<span class="dv">8</span>, <span class="dv">8</span>)</span>
+<span id="cb9-4"><a href="#cb9-4"></a>gamma <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>alpha <span class="op">=</span> <span class="fl">0.4</span> <span class="op">/</span> n_tilings  <span class="co"># effective step-size (scaled by tilings)</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="kw">def</span> epsilon_by_episode(</span>
+<span id="cb9-8"><a href="#cb9-8"></a>    ep,</span>
+<span id="cb9-9"><a href="#cb9-9"></a>    num_episodes,</span>
+<span id="cb9-10"><a href="#cb9-10"></a>    mode<span class="op">=</span><span class="st">"fixed"</span>,</span>
+<span id="cb9-11"><a href="#cb9-11"></a>    epsilon_fixed<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb9-12"><a href="#cb9-12"></a>    epsilon_start<span class="op">=</span><span class="fl">1.0</span>,</span>
+<span id="cb9-13"><a href="#cb9-13"></a>    epsilon_end<span class="op">=</span><span class="fl">0.05</span>,</span>
+<span id="cb9-14"><a href="#cb9-14"></a>    epsilon_decay_ratio<span class="op">=</span><span class="fl">0.8</span>,</span>
+<span id="cb9-15"><a href="#cb9-15"></a> ):</span>
+<span id="cb9-16"><a href="#cb9-16"></a>    <span class="co">"""Return epsilon for episode `ep` under fixed or linear-decay schedules."""</span></span>
+<span id="cb9-17"><a href="#cb9-17"></a>    <span class="cf">if</span> mode <span class="op">==</span> <span class="st">"fixed"</span>:</span>
+<span id="cb9-18"><a href="#cb9-18"></a>        <span class="cf">return</span> <span class="bu">float</span>(epsilon_fixed)</span>
+<span id="cb9-19"><a href="#cb9-19"></a>    <span class="cf">if</span> mode <span class="op">==</span> <span class="st">"decay"</span>:</span>
+<span id="cb9-20"><a href="#cb9-20"></a>        decay_steps <span class="op">=</span> <span class="bu">max</span>(<span class="dv">1</span>, <span class="bu">int</span>(num_episodes <span class="op">*</span> epsilon_decay_ratio))</span>
+<span id="cb9-21"><a href="#cb9-21"></a>        <span class="cf">return</span> <span class="bu">float</span>(</span>
+<span id="cb9-22"><a href="#cb9-22"></a>            epsilon_end</span>
+<span id="cb9-23"><a href="#cb9-23"></a>            <span class="op">+</span> (epsilon_start <span class="op">-</span> epsilon_end) <span class="op">*</span> <span class="bu">max</span>(<span class="dv">0</span>, (decay_steps <span class="op">-</span> ep)) <span class="op">/</span> decay_steps</span>
+<span id="cb9-24"><a href="#cb9-24"></a>        )</span>
+<span id="cb9-25"><a href="#cb9-25"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"epsilon mode must be either 'fixed' or 'decay'"</span>)</span>
+<span id="cb9-26"><a href="#cb9-26"></a></span>
+<span id="cb9-27"><a href="#cb9-27"></a></span>
+<span id="cb9-28"><a href="#cb9-28"></a><span class="kw">def</span> moving_average(x, window<span class="op">=</span><span class="dv">50</span>):</span>
+<span id="cb9-29"><a href="#cb9-29"></a>    kernel <span class="op">=</span> np.ones(window) <span class="op">/</span> window</span>
+<span id="cb9-30"><a href="#cb9-30"></a>    <span class="cf">return</span> np.convolve(x, kernel, mode<span class="op">=</span><span class="st">"valid"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+<section id="sarsa-on-policy-td-control-using-function-approximation" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> SARSA: On-Policy TD Control using Function Approximation</h1>
+<p><strong>I’ll implement the Episodic Semi-Gradient SARSA Control Algorithm for estimating <span class="math inline">\(\hat{q} \approx q^*\)</span>.</strong></p>
+<section id="pseudocode" class="level3" data-number="4.0.1">
+<h3 data-number="4.0.1" class="anchored" data-anchor-id="pseudocode"><span class="header-section-number">4.0.1</span> Pseudocode</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>Input: </span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="fl">1.</span> a differentiable action<span class="op">-</span>value function approximator Q <span class="cf">with</span> weights w, </span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="fl">2.</span> learning rate α ∈ (<span class="dv">0</span>, <span class="dv">1</span>], </span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="fl">3.</span> exploration rate ε ∈ [<span class="dv">0</span>, <span class="dv">1</span>]</span>
+<span id="cb10-5"><a href="#cb10-5"></a></span>
+<span id="cb10-6"><a href="#cb10-6"></a></span>
+<span id="cb10-7"><a href="#cb10-7"></a>Loop <span class="cf">for</span> each episode:</span>
+<span id="cb10-8"><a href="#cb10-8"></a>    S, A ← initialize S, A (e.g., using ε<span class="op">-</span>greedy policy derived <span class="im">from</span> Q)</span>
+<span id="cb10-9"><a href="#cb10-9"></a>    Loop <span class="cf">for</span> each step of episode:</span>
+<span id="cb10-10"><a href="#cb10-10"></a>        Take action A, observe R, S<span class="st">'</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="er">        If S' is terminal:</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a>            w ← w <span class="op">+</span> α(R <span class="op">-</span> Q(S, A<span class="op">;</span> w))∇w Q(S, A<span class="op">;</span> w)</span>
+<span id="cb10-13"><a href="#cb10-13"></a>            Go to <span class="bu">next</span> episode</span>
+<span id="cb10-14"><a href="#cb10-14"></a>        Choose A<span class="st">' from S'</span> using policy derived <span class="im">from</span> Q (e.g., ε<span class="op">-</span>greedy)</span>
+<span id="cb10-15"><a href="#cb10-15"></a>        w ← w <span class="op">+</span> α(R <span class="op">+</span> Q(S<span class="st">', A'</span><span class="op">;</span> w) <span class="op">-</span> Q(S, A<span class="op">;</span> w))∇w Q(S, A<span class="op">;</span> w)</span>
+<span id="cb10-16"><a href="#cb10-16"></a>        S ← S<span class="st">'; A ← A'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="21f90ec2" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">def</span> train_sarsa_tile(</span>
+<span id="cb11-2"><a href="#cb11-2"></a>    num_episodes<span class="op">=</span>NUM_EPISODES,</span>
+<span id="cb11-3"><a href="#cb11-3"></a>    alpha<span class="op">=</span>alpha,</span>
+<span id="cb11-4"><a href="#cb11-4"></a>    gamma<span class="op">=</span>gamma,</span>
+<span id="cb11-5"><a href="#cb11-5"></a>    n_tilings<span class="op">=</span>n_tilings,</span>
+<span id="cb11-6"><a href="#cb11-6"></a>    bins<span class="op">=</span>bins,</span>
+<span id="cb11-7"><a href="#cb11-7"></a>    epsilon_mode<span class="op">=</span><span class="st">"fixed"</span>,</span>
+<span id="cb11-8"><a href="#cb11-8"></a>    epsilon_fixed<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb11-9"><a href="#cb11-9"></a>    epsilon_start<span class="op">=</span><span class="fl">1.0</span>,</span>
+<span id="cb11-10"><a href="#cb11-10"></a>    epsilon_end<span class="op">=</span><span class="fl">0.05</span>,</span>
+<span id="cb11-11"><a href="#cb11-11"></a>    epsilon_decay_ratio<span class="op">=</span><span class="fl">0.8</span>,</span>
+<span id="cb11-12"><a href="#cb11-12"></a>    seed<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb11-13"><a href="#cb11-13"></a> ):</span>
+<span id="cb11-14"><a href="#cb11-14"></a>    env_local <span class="op">=</span> gym.make(<span class="st">"MountainCar-v0"</span>, render_mode<span class="op">=</span><span class="st">"rgb_array"</span>)</span>
+<span id="cb11-15"><a href="#cb11-15"></a>    rng_local <span class="op">=</span> np.random.default_rng(seed)</span>
+<span id="cb11-16"><a href="#cb11-16"></a></span>
+<span id="cb11-17"><a href="#cb11-17"></a>    tc_local <span class="op">=</span> TileCoder(</span>
+<span id="cb11-18"><a href="#cb11-18"></a>        low<span class="op">=</span>env_local.observation_space.low,</span>
+<span id="cb11-19"><a href="#cb11-19"></a>        high<span class="op">=</span>env_local.observation_space.high,</span>
+<span id="cb11-20"><a href="#cb11-20"></a>        n_actions<span class="op">=</span>env_local.action_space.n,</span>
+<span id="cb11-21"><a href="#cb11-21"></a>        n_tilings<span class="op">=</span>n_tilings,</span>
+<span id="cb11-22"><a href="#cb11-22"></a>        bins<span class="op">=</span>bins,</span>
+<span id="cb11-23"><a href="#cb11-23"></a>    )</span>
+<span id="cb11-24"><a href="#cb11-24"></a></span>
+<span id="cb11-25"><a href="#cb11-25"></a>    w <span class="op">=</span> np.zeros(tc_local.total_features, dtype<span class="op">=</span>np.float64)</span>
+<span id="cb11-26"><a href="#cb11-26"></a>    returns <span class="op">=</span> np.zeros(num_episodes, dtype<span class="op">=</span>np.float64)</span>
+<span id="cb11-27"><a href="#cb11-27"></a>    lengths <span class="op">=</span> np.zeros(num_episodes, dtype<span class="op">=</span>np.int32)</span>
+<span id="cb11-28"><a href="#cb11-28"></a>    eps_used <span class="op">=</span> np.zeros(num_episodes, dtype<span class="op">=</span>np.float64)</span>
+<span id="cb11-29"><a href="#cb11-29"></a></span>
+<span id="cb11-30"><a href="#cb11-30"></a>    <span class="cf">for</span> ep <span class="kw">in</span> tqdm(<span class="bu">range</span>(num_episodes), desc<span class="op">=</span><span class="ss">f"Training SARSA (</span><span class="sc">{</span>epsilon_mode<span class="sc">}</span><span class="ss">)"</span>):</span>
+<span id="cb11-31"><a href="#cb11-31"></a>        epsilon <span class="op">=</span> epsilon_by_episode(</span>
+<span id="cb11-32"><a href="#cb11-32"></a>            ep,</span>
+<span id="cb11-33"><a href="#cb11-33"></a>            num_episodes,</span>
+<span id="cb11-34"><a href="#cb11-34"></a>            mode<span class="op">=</span>epsilon_mode,</span>
+<span id="cb11-35"><a href="#cb11-35"></a>            epsilon_fixed<span class="op">=</span>epsilon_fixed,</span>
+<span id="cb11-36"><a href="#cb11-36"></a>            epsilon_start<span class="op">=</span>epsilon_start,</span>
+<span id="cb11-37"><a href="#cb11-37"></a>            epsilon_end<span class="op">=</span>epsilon_end,</span>
+<span id="cb11-38"><a href="#cb11-38"></a>            epsilon_decay_ratio<span class="op">=</span>epsilon_decay_ratio,</span>
+<span id="cb11-39"><a href="#cb11-39"></a>        )</span>
+<span id="cb11-40"><a href="#cb11-40"></a>        eps_used[ep] <span class="op">=</span> epsilon</span>
+<span id="cb11-41"><a href="#cb11-41"></a></span>
+<span id="cb11-42"><a href="#cb11-42"></a>        state, _ <span class="op">=</span> env_local.reset()</span>
+<span id="cb11-43"><a href="#cb11-43"></a>        action <span class="op">=</span> epsilon_greedy(w, tc_local, state, epsilon, rng_local)</span>
+<span id="cb11-44"><a href="#cb11-44"></a></span>
+<span id="cb11-45"><a href="#cb11-45"></a>        total_reward <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb11-46"><a href="#cb11-46"></a>        steps <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb11-47"><a href="#cb11-47"></a></span>
+<span id="cb11-48"><a href="#cb11-48"></a>        <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb11-49"><a href="#cb11-49"></a>            next_state, reward, terminated, truncated, _ <span class="op">=</span> env_local.step(action)</span>
+<span id="cb11-50"><a href="#cb11-50"></a>            done <span class="op">=</span> terminated <span class="kw">or</span> truncated</span>
+<span id="cb11-51"><a href="#cb11-51"></a></span>
+<span id="cb11-52"><a href="#cb11-52"></a>            sa_idx <span class="op">=</span> tc_local.get_active_features(state, action)</span>
+<span id="cb11-53"><a href="#cb11-53"></a>            q_sa <span class="op">=</span> w[sa_idx].<span class="bu">sum</span>()</span>
+<span id="cb11-54"><a href="#cb11-54"></a></span>
+<span id="cb11-55"><a href="#cb11-55"></a>            <span class="cf">if</span> done:</span>
+<span id="cb11-56"><a href="#cb11-56"></a>                target <span class="op">=</span> reward</span>
+<span id="cb11-57"><a href="#cb11-57"></a>                w[sa_idx] <span class="op">+=</span> alpha <span class="op">*</span> (target <span class="op">-</span> q_sa)</span>
+<span id="cb11-58"><a href="#cb11-58"></a>                total_reward <span class="op">+=</span> reward</span>
+<span id="cb11-59"><a href="#cb11-59"></a>                steps <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb11-60"><a href="#cb11-60"></a>                <span class="cf">break</span></span>
+<span id="cb11-61"><a href="#cb11-61"></a></span>
+<span id="cb11-62"><a href="#cb11-62"></a>            next_action <span class="op">=</span> epsilon_greedy(w, tc_local, next_state, epsilon, rng_local)</span>
+<span id="cb11-63"><a href="#cb11-63"></a>            target <span class="op">=</span> reward <span class="op">+</span> gamma <span class="op">*</span> q_value(w, tc_local, next_state, next_action)</span>
+<span id="cb11-64"><a href="#cb11-64"></a>            w[sa_idx] <span class="op">+=</span> alpha <span class="op">*</span> (target <span class="op">-</span> q_sa)</span>
+<span id="cb11-65"><a href="#cb11-65"></a></span>
+<span id="cb11-66"><a href="#cb11-66"></a>            total_reward <span class="op">+=</span> reward</span>
+<span id="cb11-67"><a href="#cb11-67"></a>            steps <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb11-68"><a href="#cb11-68"></a>            state, action <span class="op">=</span> next_state, next_action</span>
+<span id="cb11-69"><a href="#cb11-69"></a></span>
+<span id="cb11-70"><a href="#cb11-70"></a>        returns[ep] <span class="op">=</span> total_reward</span>
+<span id="cb11-71"><a href="#cb11-71"></a>        lengths[ep] <span class="op">=</span> steps</span>
+<span id="cb11-72"><a href="#cb11-72"></a></span>
+<span id="cb11-73"><a href="#cb11-73"></a>    env_local.close()</span>
+<span id="cb11-74"><a href="#cb11-74"></a>    <span class="cf">return</span> {</span>
+<span id="cb11-75"><a href="#cb11-75"></a>        <span class="st">"weights"</span>: w,</span>
+<span id="cb11-76"><a href="#cb11-76"></a>        <span class="st">"returns"</span>: returns,</span>
+<span id="cb11-77"><a href="#cb11-77"></a>        <span class="st">"lengths"</span>: lengths,</span>
+<span id="cb11-78"><a href="#cb11-78"></a>        <span class="st">"epsilons"</span>: eps_used,</span>
+<span id="cb11-79"><a href="#cb11-79"></a>        <span class="st">"tc"</span>: tc_local,</span>
+<span id="cb11-80"><a href="#cb11-80"></a>        <span class="st">"rng"</span>: rng_local,</span>
+<span id="cb11-81"><a href="#cb11-81"></a>    }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+<section id="q-learning-off-policy-td-control-using-function-approximation" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Q-Learning: Off-Policy TD Control using Function Approximation</h1>
+<p><strong>I’ll implement the Episodic Semi-Gradient Q-Learning Control Algorithm for estimating <span class="math inline">\(\hat{q} \approx q^*\)</span>.</strong></p>
+<p><strong>Importance Sampling Note:</strong></p>
+<ol type="1">
+<li>Although, The Chapter 11 of the book requires the use of on-policy distribution(<span class="math inline">\(\mu\)</span>) for the update to repurpose the semi-gradient TD(0) method to off-policy case, since the mountain car environment is quite simple, I will forego the use of <strong>importance sampling</strong> and directly use the greedy policy for the update.</li>
+</ol>
+<section id="pseudocode-1" class="level3" data-number="5.0.1">
+<h3 data-number="5.0.1" class="anchored" data-anchor-id="pseudocode-1"><span class="header-section-number">5.0.1</span> Pseudocode</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>Input: </span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="fl">1.</span> a differentiable action<span class="op">-</span>value function approximator Q <span class="cf">with</span> weights w, </span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="fl">2.</span> learning rate α ∈ (<span class="dv">0</span>, <span class="dv">1</span>], </span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="fl">3.</span> exploration rate ε ∈ [<span class="dv">0</span>, <span class="dv">1</span>]</span>
+<span id="cb12-5"><a href="#cb12-5"></a></span>
+<span id="cb12-6"><a href="#cb12-6"></a>Loop <span class="cf">for</span> each episode:</span>
+<span id="cb12-7"><a href="#cb12-7"></a>    S ← initialize S (e.g., randomly)</span>
+<span id="cb12-8"><a href="#cb12-8"></a>    Loop <span class="cf">for</span> each step of episode:</span>
+<span id="cb12-9"><a href="#cb12-9"></a>        Choose A <span class="im">from</span> S using policy derived <span class="im">from</span> Q (e.g., ε<span class="op">-</span>greedy)</span>
+<span id="cb12-10"><a href="#cb12-10"></a>        Take action A, observe R, S<span class="st">'</span></span>
+<span id="cb12-11"><a href="#cb12-11"></a><span class="er">        If S' is terminal:</span></span>
+<span id="cb12-12"><a href="#cb12-12"></a>            w ← w <span class="op">+</span> α(R <span class="op">-</span> Q(S, A<span class="op">;</span> w))∇w Q(S, A<span class="op">;</span> w)</span>
+<span id="cb12-13"><a href="#cb12-13"></a>            Go to <span class="bu">next</span> episode</span>
+<span id="cb12-14"><a href="#cb12-14"></a>        w ← w <span class="op">+</span> α(R <span class="op">+</span> max_a<span class="st">' Q(S'</span>, a<span class="st">'; w) - Q(S, A; w))∇w Q(S, A; w)</span></span>
+<span id="cb12-15"><a href="#cb12-15"></a><span class="er">        S ← S'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="8a493c9c" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">def</span> train_q_learning_tile(</span>
+<span id="cb13-2"><a href="#cb13-2"></a>    num_episodes<span class="op">=</span>NUM_EPISODES,</span>
+<span id="cb13-3"><a href="#cb13-3"></a>    alpha<span class="op">=</span>alpha,</span>
+<span id="cb13-4"><a href="#cb13-4"></a>    gamma<span class="op">=</span>gamma,</span>
+<span id="cb13-5"><a href="#cb13-5"></a>    n_tilings<span class="op">=</span>n_tilings,</span>
+<span id="cb13-6"><a href="#cb13-6"></a>    bins<span class="op">=</span>bins,</span>
+<span id="cb13-7"><a href="#cb13-7"></a>    epsilon_mode<span class="op">=</span><span class="st">"fixed"</span>,</span>
+<span id="cb13-8"><a href="#cb13-8"></a>    epsilon_fixed<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb13-9"><a href="#cb13-9"></a>    epsilon_start<span class="op">=</span><span class="fl">1.0</span>,</span>
+<span id="cb13-10"><a href="#cb13-10"></a>    epsilon_end<span class="op">=</span><span class="fl">0.05</span>,</span>
+<span id="cb13-11"><a href="#cb13-11"></a>    epsilon_decay_ratio<span class="op">=</span><span class="fl">0.8</span>,</span>
+<span id="cb13-12"><a href="#cb13-12"></a>    seed<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb13-13"><a href="#cb13-13"></a> ):</span>
+<span id="cb13-14"><a href="#cb13-14"></a>    <span class="co">"""Episodic semi-gradient Q-Learning with tile coding."""</span></span>
+<span id="cb13-15"><a href="#cb13-15"></a>    env_local <span class="op">=</span> gym.make(<span class="st">"MountainCar-v0"</span>, render_mode<span class="op">=</span><span class="st">"rgb_array"</span>)</span>
+<span id="cb13-16"><a href="#cb13-16"></a>    rng_local <span class="op">=</span> np.random.default_rng(seed)</span>
+<span id="cb13-17"><a href="#cb13-17"></a></span>
+<span id="cb13-18"><a href="#cb13-18"></a>    tc_local <span class="op">=</span> TileCoder(</span>
+<span id="cb13-19"><a href="#cb13-19"></a>        low<span class="op">=</span>env_local.observation_space.low,</span>
+<span id="cb13-20"><a href="#cb13-20"></a>        high<span class="op">=</span>env_local.observation_space.high,</span>
+<span id="cb13-21"><a href="#cb13-21"></a>        n_actions<span class="op">=</span>env_local.action_space.n,</span>
+<span id="cb13-22"><a href="#cb13-22"></a>        n_tilings<span class="op">=</span>n_tilings,</span>
+<span id="cb13-23"><a href="#cb13-23"></a>        bins<span class="op">=</span>bins,</span>
+<span id="cb13-24"><a href="#cb13-24"></a>    )</span>
+<span id="cb13-25"><a href="#cb13-25"></a></span>
+<span id="cb13-26"><a href="#cb13-26"></a>    w <span class="op">=</span> np.zeros(tc_local.total_features, dtype<span class="op">=</span>np.float64)</span>
+<span id="cb13-27"><a href="#cb13-27"></a>    returns <span class="op">=</span> np.zeros(num_episodes, dtype<span class="op">=</span>np.float64)</span>
+<span id="cb13-28"><a href="#cb13-28"></a>    lengths <span class="op">=</span> np.zeros(num_episodes, dtype<span class="op">=</span>np.int32)</span>
+<span id="cb13-29"><a href="#cb13-29"></a>    eps_used <span class="op">=</span> np.zeros(num_episodes, dtype<span class="op">=</span>np.float64)</span>
+<span id="cb13-30"><a href="#cb13-30"></a></span>
+<span id="cb13-31"><a href="#cb13-31"></a>    <span class="cf">for</span> ep <span class="kw">in</span> tqdm(<span class="bu">range</span>(num_episodes), desc<span class="op">=</span><span class="ss">f"Training Q-Learning (</span><span class="sc">{</span>epsilon_mode<span class="sc">}</span><span class="ss">)"</span>):</span>
+<span id="cb13-32"><a href="#cb13-32"></a>        epsilon <span class="op">=</span> epsilon_by_episode(</span>
+<span id="cb13-33"><a href="#cb13-33"></a>            ep,</span>
+<span id="cb13-34"><a href="#cb13-34"></a>            num_episodes,</span>
+<span id="cb13-35"><a href="#cb13-35"></a>            mode<span class="op">=</span>epsilon_mode,</span>
+<span id="cb13-36"><a href="#cb13-36"></a>            epsilon_fixed<span class="op">=</span>epsilon_fixed,</span>
+<span id="cb13-37"><a href="#cb13-37"></a>            epsilon_start<span class="op">=</span>epsilon_start,</span>
+<span id="cb13-38"><a href="#cb13-38"></a>            epsilon_end<span class="op">=</span>epsilon_end,</span>
+<span id="cb13-39"><a href="#cb13-39"></a>            epsilon_decay_ratio<span class="op">=</span>epsilon_decay_ratio,</span>
+<span id="cb13-40"><a href="#cb13-40"></a>        )</span>
+<span id="cb13-41"><a href="#cb13-41"></a>        eps_used[ep] <span class="op">=</span> epsilon</span>
+<span id="cb13-42"><a href="#cb13-42"></a></span>
+<span id="cb13-43"><a href="#cb13-43"></a>        state, _ <span class="op">=</span> env_local.reset()</span>
+<span id="cb13-44"><a href="#cb13-44"></a>        total_reward <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb13-45"><a href="#cb13-45"></a>        steps <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb13-46"><a href="#cb13-46"></a></span>
+<span id="cb13-47"><a href="#cb13-47"></a>        <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb13-48"><a href="#cb13-48"></a>            action <span class="op">=</span> epsilon_greedy(w, tc_local, state, epsilon, rng_local)</span>
+<span id="cb13-49"><a href="#cb13-49"></a>            next_state, reward, terminated, truncated, _ <span class="op">=</span> env_local.step(action)</span>
+<span id="cb13-50"><a href="#cb13-50"></a>            done <span class="op">=</span> terminated <span class="kw">or</span> truncated</span>
+<span id="cb13-51"><a href="#cb13-51"></a></span>
+<span id="cb13-52"><a href="#cb13-52"></a>            sa_idx <span class="op">=</span> tc_local.get_active_features(state, action)</span>
+<span id="cb13-53"><a href="#cb13-53"></a>            q_sa <span class="op">=</span> w[sa_idx].<span class="bu">sum</span>()</span>
+<span id="cb13-54"><a href="#cb13-54"></a></span>
+<span id="cb13-55"><a href="#cb13-55"></a>            <span class="cf">if</span> done:</span>
+<span id="cb13-56"><a href="#cb13-56"></a>                target <span class="op">=</span> reward</span>
+<span id="cb13-57"><a href="#cb13-57"></a>            <span class="cf">else</span>:</span>
+<span id="cb13-58"><a href="#cb13-58"></a>                q_next_max <span class="op">=</span> <span class="bu">max</span>(q_value(w, tc_local, next_state, a) <span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(tc_local.n_actions))</span>
+<span id="cb13-59"><a href="#cb13-59"></a>                target <span class="op">=</span> reward <span class="op">+</span> gamma <span class="op">*</span> q_next_max</span>
+<span id="cb13-60"><a href="#cb13-60"></a></span>
+<span id="cb13-61"><a href="#cb13-61"></a>            w[sa_idx] <span class="op">+=</span> alpha <span class="op">*</span> (target <span class="op">-</span> q_sa)</span>
+<span id="cb13-62"><a href="#cb13-62"></a></span>
+<span id="cb13-63"><a href="#cb13-63"></a>            total_reward <span class="op">+=</span> reward</span>
+<span id="cb13-64"><a href="#cb13-64"></a>            steps <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb13-65"><a href="#cb13-65"></a>            state <span class="op">=</span> next_state</span>
+<span id="cb13-66"><a href="#cb13-66"></a></span>
+<span id="cb13-67"><a href="#cb13-67"></a>            <span class="cf">if</span> done:</span>
+<span id="cb13-68"><a href="#cb13-68"></a>                <span class="cf">break</span></span>
+<span id="cb13-69"><a href="#cb13-69"></a></span>
+<span id="cb13-70"><a href="#cb13-70"></a>        returns[ep] <span class="op">=</span> total_reward</span>
+<span id="cb13-71"><a href="#cb13-71"></a>        lengths[ep] <span class="op">=</span> steps</span>
+<span id="cb13-72"><a href="#cb13-72"></a></span>
+<span id="cb13-73"><a href="#cb13-73"></a>    env_local.close()</span>
+<span id="cb13-74"><a href="#cb13-74"></a>    <span class="cf">return</span> {</span>
+<span id="cb13-75"><a href="#cb13-75"></a>        <span class="st">"weights"</span>: w,</span>
+<span id="cb13-76"><a href="#cb13-76"></a>        <span class="st">"returns"</span>: returns,</span>
+<span id="cb13-77"><a href="#cb13-77"></a>        <span class="st">"lengths"</span>: lengths,</span>
+<span id="cb13-78"><a href="#cb13-78"></a>        <span class="st">"epsilons"</span>: eps_used,</span>
+<span id="cb13-79"><a href="#cb13-79"></a>        <span class="st">"tc"</span>: tc_local,</span>
+<span id="cb13-80"><a href="#cb13-80"></a>        <span class="st">"rng"</span>: rng_local,</span>
+<span id="cb13-81"><a href="#cb13-81"></a>    }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+<section id="experimentation-and-analysis" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Experimentation and Analysis</h1>
+<section id="run-experiments" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="run-experiments"><span class="header-section-number">6.1</span> Run Experiments</h2>
+<p>We now train both <strong>SARSA</strong> and <strong>Q-Learning</strong> under two epsilon strategies: 1. <strong>Fixed epsilon</strong> (constant exploration during training). 2. <strong>Decay epsilon</strong> (linearly annealed exploration).</p>
+<p>Both algorithms use identical environment, tile-coding configuration, and optimizer settings for fair comparison.</p>
+<div id="a07d7d4b" class="cell">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># Run controlled experiments under identical settings for both algorithms</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a></span>
+<span id="cb14-3"><a href="#cb14-3"></a>NUM_EPISODES_EXP <span class="op">=</span> NUM_EPISODES</span>
+<span id="cb14-4"><a href="#cb14-4"></a></span>
+<span id="cb14-5"><a href="#cb14-5"></a>common_kwargs <span class="op">=</span> <span class="bu">dict</span>(</span>
+<span id="cb14-6"><a href="#cb14-6"></a>    num_episodes<span class="op">=</span>NUM_EPISODES_EXP,</span>
+<span id="cb14-7"><a href="#cb14-7"></a>    alpha<span class="op">=</span>alpha,</span>
+<span id="cb14-8"><a href="#cb14-8"></a>    gamma<span class="op">=</span>gamma,</span>
+<span id="cb14-9"><a href="#cb14-9"></a>    n_tilings<span class="op">=</span>n_tilings,</span>
+<span id="cb14-10"><a href="#cb14-10"></a>    bins<span class="op">=</span>bins,</span>
+<span id="cb14-11"><a href="#cb14-11"></a> )</span>
+<span id="cb14-12"><a href="#cb14-12"></a></span>
+<span id="cb14-13"><a href="#cb14-13"></a><span class="co"># Fixed-epsilon setting</span></span>
+<span id="cb14-14"><a href="#cb14-14"></a>epsilon_fixed <span class="op">=</span> <span class="fl">0.2</span></span>
+<span id="cb14-15"><a href="#cb14-15"></a></span>
+<span id="cb14-16"><a href="#cb14-16"></a>sarsa_fixed <span class="op">=</span> train_sarsa_tile(</span>
+<span id="cb14-17"><a href="#cb14-17"></a>    <span class="op">**</span>common_kwargs,</span>
+<span id="cb14-18"><a href="#cb14-18"></a>    epsilon_mode<span class="op">=</span><span class="st">"fixed"</span>,</span>
+<span id="cb14-19"><a href="#cb14-19"></a>    epsilon_fixed<span class="op">=</span>epsilon_fixed,</span>
+<span id="cb14-20"><a href="#cb14-20"></a>    seed<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb14-21"><a href="#cb14-21"></a> )</span>
+<span id="cb14-22"><a href="#cb14-22"></a>q_fixed <span class="op">=</span> train_q_learning_tile(</span>
+<span id="cb14-23"><a href="#cb14-23"></a>    <span class="op">**</span>common_kwargs,</span>
+<span id="cb14-24"><a href="#cb14-24"></a>    epsilon_mode<span class="op">=</span><span class="st">"fixed"</span>,</span>
+<span id="cb14-25"><a href="#cb14-25"></a>    epsilon_fixed<span class="op">=</span>epsilon_fixed,</span>
+<span id="cb14-26"><a href="#cb14-26"></a>    seed<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb14-27"><a href="#cb14-27"></a> )</span>
+<span id="cb14-28"><a href="#cb14-28"></a></span>
+<span id="cb14-29"><a href="#cb14-29"></a><span class="co"># Decay-epsilon setting</span></span>
+<span id="cb14-30"><a href="#cb14-30"></a>epsilon_start <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb14-31"><a href="#cb14-31"></a>epsilon_end <span class="op">=</span> <span class="fl">0.05</span></span>
+<span id="cb14-32"><a href="#cb14-32"></a>epsilon_decay_ratio <span class="op">=</span> <span class="fl">0.8</span></span>
+<span id="cb14-33"><a href="#cb14-33"></a></span>
+<span id="cb14-34"><a href="#cb14-34"></a>sarsa_decay <span class="op">=</span> train_sarsa_tile(</span>
+<span id="cb14-35"><a href="#cb14-35"></a>    <span class="op">**</span>common_kwargs,</span>
+<span id="cb14-36"><a href="#cb14-36"></a>    epsilon_mode<span class="op">=</span><span class="st">"decay"</span>,</span>
+<span id="cb14-37"><a href="#cb14-37"></a>    epsilon_start<span class="op">=</span>epsilon_start,</span>
+<span id="cb14-38"><a href="#cb14-38"></a>    epsilon_end<span class="op">=</span>epsilon_end,</span>
+<span id="cb14-39"><a href="#cb14-39"></a>    epsilon_decay_ratio<span class="op">=</span>epsilon_decay_ratio,</span>
+<span id="cb14-40"><a href="#cb14-40"></a>    seed<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb14-41"><a href="#cb14-41"></a> )</span>
+<span id="cb14-42"><a href="#cb14-42"></a></span>
+<span id="cb14-43"><a href="#cb14-43"></a>q_decay <span class="op">=</span> train_q_learning_tile(</span>
+<span id="cb14-44"><a href="#cb14-44"></a>    <span class="op">**</span>common_kwargs,</span>
+<span id="cb14-45"><a href="#cb14-45"></a>    epsilon_mode<span class="op">=</span><span class="st">"decay"</span>,</span>
+<span id="cb14-46"><a href="#cb14-46"></a>    epsilon_start<span class="op">=</span>epsilon_start,</span>
+<span id="cb14-47"><a href="#cb14-47"></a>    epsilon_end<span class="op">=</span>epsilon_end,</span>
+<span id="cb14-48"><a href="#cb14-48"></a>    epsilon_decay_ratio<span class="op">=</span>epsilon_decay_ratio,</span>
+<span id="cb14-49"><a href="#cb14-49"></a>    seed<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb14-50"><a href="#cb14-50"></a> )</span>
+<span id="cb14-51"><a href="#cb14-51"></a></span>
+<span id="cb14-52"><a href="#cb14-52"></a></span>
+<span id="cb14-53"><a href="#cb14-53"></a>tc <span class="op">=</span> sarsa_fixed[<span class="st">"tc"</span>]</span>
+<span id="cb14-54"><a href="#cb14-54"></a>rng <span class="op">=</span> sarsa_fixed[<span class="st">"rng"</span>]</span>
+<span id="cb14-55"><a href="#cb14-55"></a></span>
+<span id="cb14-56"><a href="#cb14-56"></a>weights <span class="op">=</span> sarsa_fixed[<span class="st">"weights"</span>]</span>
+<span id="cb14-57"><a href="#cb14-57"></a>episode_returns <span class="op">=</span> sarsa_fixed[<span class="st">"returns"</span>]</span>
+<span id="cb14-58"><a href="#cb14-58"></a>episode_lengths <span class="op">=</span> sarsa_fixed[<span class="st">"lengths"</span>]</span>
+<span id="cb14-59"><a href="#cb14-59"></a></span>
+<span id="cb14-60"><a href="#cb14-60"></a>weights_q <span class="op">=</span> q_fixed[<span class="st">"weights"</span>]</span>
+<span id="cb14-61"><a href="#cb14-61"></a>q_episode_returns <span class="op">=</span> q_fixed[<span class="st">"returns"</span>]</span>
+<span id="cb14-62"><a href="#cb14-62"></a>q_episode_lengths <span class="op">=</span> q_fixed[<span class="st">"lengths"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training SARSA (fixed): 100%|██████████| 200/200 [00:35&lt;00:00,  5.66it/s]
+Training Q-Learning (fixed): 100%|██████████| 200/200 [00:47&lt;00:00,  4.19it/s]
+Training SARSA (decay): 100%|██████████| 200/200 [00:26&lt;00:00,  7.44it/s]
+Training Q-Learning (decay): 100%|██████████| 200/200 [00:42&lt;00:00,  4.69it/s]</code></pre>
+</div>
+</div>
+</section>
+<section id="plot-learning-curves" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="plot-learning-curves"><span class="header-section-number">6.2</span> Plot Learning Curves</h2>
+<p><strong>Episodic Return</strong> and <strong>Episode Length</strong></p>
+<div id="e0a259ac" class="cell">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># Plot learning curves: </span></span>
+<span id="cb16-2"><a href="#cb16-2"></a></span>
+<span id="cb16-3"><a href="#cb16-3"></a>window <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a>episodes <span class="op">=</span> np.arange(NUM_EPISODES_EXP)</span>
+<span id="cb16-5"><a href="#cb16-5"></a>ma_x <span class="op">=</span> np.arange(window <span class="op">-</span> <span class="dv">1</span>, NUM_EPISODES_EXP)</span>
+<span id="cb16-6"><a href="#cb16-6"></a></span>
+<span id="cb16-7"><a href="#cb16-7"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">9</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-8"><a href="#cb16-8"></a></span>
+<span id="cb16-9"><a href="#cb16-9"></a><span class="co"># --- Episodic Returns ---</span></span>
+<span id="cb16-10"><a href="#cb16-10"></a>ax[<span class="dv">0</span>, <span class="dv">0</span>].plot(episodes, sarsa_fixed[<span class="st">"returns"</span>], alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">"Raw"</span>)</span>
+<span id="cb16-11"><a href="#cb16-11"></a>ax[<span class="dv">0</span>, <span class="dv">0</span>].plot(ma_x, moving_average(sarsa_fixed[<span class="st">"returns"</span>], window), lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f"MA(</span><span class="sc">{</span>window<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb16-12"><a href="#cb16-12"></a>ax[<span class="dv">0</span>, <span class="dv">0</span>].set_title(<span class="ss">f"SARSA | Fixed epsilon=</span><span class="sc">{</span>epsilon_fixed<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-13"><a href="#cb16-13"></a>ax[<span class="dv">0</span>, <span class="dv">0</span>].set_ylabel(<span class="st">"Episode Return"</span>)</span>
+<span id="cb16-14"><a href="#cb16-14"></a>ax[<span class="dv">0</span>, <span class="dv">0</span>].legend()</span>
+<span id="cb16-15"><a href="#cb16-15"></a></span>
+<span id="cb16-16"><a href="#cb16-16"></a>ax[<span class="dv">0</span>, <span class="dv">1</span>].plot(episodes, q_fixed[<span class="st">"returns"</span>], alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">"Raw"</span>)</span>
+<span id="cb16-17"><a href="#cb16-17"></a>ax[<span class="dv">0</span>, <span class="dv">1</span>].plot(ma_x, moving_average(q_fixed[<span class="st">"returns"</span>], window), lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f"MA(</span><span class="sc">{</span>window<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb16-18"><a href="#cb16-18"></a>ax[<span class="dv">0</span>, <span class="dv">1</span>].set_title(<span class="ss">f"Q-Learning | Fixed epsilon=</span><span class="sc">{</span>epsilon_fixed<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-19"><a href="#cb16-19"></a>ax[<span class="dv">0</span>, <span class="dv">1</span>].legend()</span>
+<span id="cb16-20"><a href="#cb16-20"></a></span>
+<span id="cb16-21"><a href="#cb16-21"></a><span class="co"># --- Episode Lengths ---</span></span>
+<span id="cb16-22"><a href="#cb16-22"></a>ax[<span class="dv">1</span>, <span class="dv">0</span>].plot(episodes, sarsa_fixed[<span class="st">"lengths"</span>], alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">"Raw"</span>)</span>
+<span id="cb16-23"><a href="#cb16-23"></a>ax[<span class="dv">1</span>, <span class="dv">0</span>].plot(ma_x, moving_average(sarsa_fixed[<span class="st">"lengths"</span>], window), lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f"MA(</span><span class="sc">{</span>window<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb16-24"><a href="#cb16-24"></a>ax[<span class="dv">1</span>, <span class="dv">0</span>].set_ylabel(<span class="st">"Episode Steps"</span>)</span>
+<span id="cb16-25"><a href="#cb16-25"></a>ax[<span class="dv">1</span>, <span class="dv">0</span>].set_xlabel(<span class="st">"Training Episode"</span>)</span>
+<span id="cb16-26"><a href="#cb16-26"></a>ax[<span class="dv">1</span>, <span class="dv">0</span>].legend()</span>
+<span id="cb16-27"><a href="#cb16-27"></a></span>
+<span id="cb16-28"><a href="#cb16-28"></a>ax[<span class="dv">1</span>, <span class="dv">1</span>].plot(episodes, q_fixed[<span class="st">"lengths"</span>], alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">"Raw"</span>)</span>
+<span id="cb16-29"><a href="#cb16-29"></a>ax[<span class="dv">1</span>, <span class="dv">1</span>].plot(ma_x, moving_average(q_fixed[<span class="st">"lengths"</span>], window), lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f"MA(</span><span class="sc">{</span>window<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb16-30"><a href="#cb16-30"></a>ax[<span class="dv">1</span>, <span class="dv">1</span>].set_ylabel(<span class="st">"Episode Steps"</span>)</span>
+<span id="cb16-31"><a href="#cb16-31"></a>ax[<span class="dv">1</span>, <span class="dv">1</span>].set_xlabel(<span class="st">"Training Episode"</span>)</span>
+<span id="cb16-32"><a href="#cb16-32"></a>ax[<span class="dv">1</span>, <span class="dv">1</span>].legend()</span>
+<span id="cb16-33"><a href="#cb16-33"></a></span>
+<span id="cb16-34"><a href="#cb16-34"></a>plt.suptitle(<span class="st">"Fixed-Epsilon Training Curves"</span>, y<span class="op">=</span><span class="fl">1.02</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb16-35"><a href="#cb16-35"></a>plt.tight_layout()</span>
+<span id="cb16-36"><a href="#cb16-36"></a>plt.show()</span>
+<span id="cb16-37"><a href="#cb16-37"></a></span>
+<span id="cb16-38"><a href="#cb16-38"></a><span class="co"># Decay comparison (same plotting style)</span></span>
+<span id="cb16-39"><a href="#cb16-39"></a>fig2, ax2 <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">9</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-40"><a href="#cb16-40"></a></span>
+<span id="cb16-41"><a href="#cb16-41"></a>ax2[<span class="dv">0</span>, <span class="dv">0</span>].plot(episodes, sarsa_decay[<span class="st">"returns"</span>], alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">"Raw"</span>)</span>
+<span id="cb16-42"><a href="#cb16-42"></a>ax2[<span class="dv">0</span>, <span class="dv">0</span>].plot(ma_x, moving_average(sarsa_decay[<span class="st">"returns"</span>], window), lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f"MA(</span><span class="sc">{</span>window<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb16-43"><a href="#cb16-43"></a>ax2[<span class="dv">0</span>, <span class="dv">0</span>].set_title(<span class="st">"SARSA | Decay epsilon"</span>)</span>
+<span id="cb16-44"><a href="#cb16-44"></a>ax2[<span class="dv">0</span>, <span class="dv">0</span>].set_ylabel(<span class="st">"Episode Return"</span>)</span>
+<span id="cb16-45"><a href="#cb16-45"></a>ax2[<span class="dv">0</span>, <span class="dv">0</span>].legend()</span>
+<span id="cb16-46"><a href="#cb16-46"></a></span>
+<span id="cb16-47"><a href="#cb16-47"></a>ax2[<span class="dv">0</span>, <span class="dv">1</span>].plot(episodes, q_decay[<span class="st">"returns"</span>], alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">"Raw"</span>)</span>
+<span id="cb16-48"><a href="#cb16-48"></a>ax2[<span class="dv">0</span>, <span class="dv">1</span>].plot(ma_x, moving_average(q_decay[<span class="st">"returns"</span>], window), lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f"MA(</span><span class="sc">{</span>window<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb16-49"><a href="#cb16-49"></a>ax2[<span class="dv">0</span>, <span class="dv">1</span>].set_title(<span class="st">"Q-Learning | Decay epsilon"</span>)</span>
+<span id="cb16-50"><a href="#cb16-50"></a>ax2[<span class="dv">0</span>, <span class="dv">1</span>].legend()</span>
+<span id="cb16-51"><a href="#cb16-51"></a></span>
+<span id="cb16-52"><a href="#cb16-52"></a>ax2[<span class="dv">1</span>, <span class="dv">0</span>].plot(episodes, sarsa_decay[<span class="st">"lengths"</span>], alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">"Raw"</span>)</span>
+<span id="cb16-53"><a href="#cb16-53"></a>ax2[<span class="dv">1</span>, <span class="dv">0</span>].plot(ma_x, moving_average(sarsa_decay[<span class="st">"lengths"</span>], window), lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f"MA(</span><span class="sc">{</span>window<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb16-54"><a href="#cb16-54"></a>ax2[<span class="dv">1</span>, <span class="dv">0</span>].set_ylabel(<span class="st">"Episode Steps"</span>)</span>
+<span id="cb16-55"><a href="#cb16-55"></a>ax2[<span class="dv">1</span>, <span class="dv">0</span>].set_xlabel(<span class="st">"Training Episode"</span>)</span>
+<span id="cb16-56"><a href="#cb16-56"></a>ax2[<span class="dv">1</span>, <span class="dv">0</span>].legend()</span>
+<span id="cb16-57"><a href="#cb16-57"></a></span>
+<span id="cb16-58"><a href="#cb16-58"></a>ax2[<span class="dv">1</span>, <span class="dv">1</span>].plot(episodes, q_decay[<span class="st">"lengths"</span>], alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">"Raw"</span>)</span>
+<span id="cb16-59"><a href="#cb16-59"></a>ax2[<span class="dv">1</span>, <span class="dv">1</span>].plot(ma_x, moving_average(q_decay[<span class="st">"lengths"</span>], window), lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f"MA(</span><span class="sc">{</span>window<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb16-60"><a href="#cb16-60"></a>ax2[<span class="dv">1</span>, <span class="dv">1</span>].set_ylabel(<span class="st">"Episode Steps"</span>)</span>
+<span id="cb16-61"><a href="#cb16-61"></a>ax2[<span class="dv">1</span>, <span class="dv">1</span>].set_xlabel(<span class="st">"Training Episode"</span>)</span>
+<span id="cb16-62"><a href="#cb16-62"></a>ax2[<span class="dv">1</span>, <span class="dv">1</span>].legend()</span>
+<span id="cb16-63"><a href="#cb16-63"></a></span>
+<span id="cb16-64"><a href="#cb16-64"></a>plt.suptitle(</span>
+<span id="cb16-65"><a href="#cb16-65"></a>    <span class="ss">f"Decay-Epsilon Training Curves (start=</span><span class="sc">{</span>epsilon_start<span class="sc">}</span><span class="ss">, end=</span><span class="sc">{</span>epsilon_end<span class="sc">}</span><span class="ss">, ratio=</span><span class="sc">{</span>epsilon_decay_ratio<span class="sc">}</span><span class="ss">)"</span>,</span>
+<span id="cb16-66"><a href="#cb16-66"></a>    y<span class="op">=</span><span class="fl">1.02</span>,</span>
+<span id="cb16-67"><a href="#cb16-67"></a>    fontsize<span class="op">=</span><span class="dv">14</span>,</span>
+<span id="cb16-68"><a href="#cb16-68"></a> )</span>
+<span id="cb16-69"><a href="#cb16-69"></a>plt.tight_layout()</span>
+<span id="cb16-70"><a href="#cb16-70"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assignment_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assignment_files/figure-html/cell-10-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="videos" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="videos"><span class="header-section-number">6.3</span> Videos</h2>
+<div id="5fb950d5" class="cell" data-execution_count="32">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Optional: record greedy videos from trained fixed-epsilon policies</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="im">from</span> gymnasium.wrappers <span class="im">import</span> RecordVideo</span>
+<span id="cb17-3"><a href="#cb17-3"></a></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="kw">def</span> record_greedy_video(weights, tc_obj, video_folder, rng_obj, tag<span class="op">=</span><span class="st">"agent"</span>):</span>
+<span id="cb17-5"><a href="#cb17-5"></a>    env_vid <span class="op">=</span> RecordVideo(</span>
+<span id="cb17-6"><a href="#cb17-6"></a>        gym.make(<span class="st">"MountainCar-v0"</span>, render_mode<span class="op">=</span><span class="st">"rgb_array"</span>),</span>
+<span id="cb17-7"><a href="#cb17-7"></a>        video_folder<span class="op">=</span>video_folder,</span>
+<span id="cb17-8"><a href="#cb17-8"></a>        episode_trigger<span class="op">=</span><span class="kw">lambda</span> x: <span class="va">True</span>,</span>
+<span id="cb17-9"><a href="#cb17-9"></a>        name_prefix<span class="op">=</span>tag,</span>
+<span id="cb17-10"><a href="#cb17-10"></a>    )</span>
+<span id="cb17-11"><a href="#cb17-11"></a>    state, _ <span class="op">=</span> env_vid.reset()</span>
+<span id="cb17-12"><a href="#cb17-12"></a>    done <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb17-13"><a href="#cb17-13"></a>    <span class="cf">while</span> <span class="kw">not</span> done:</span>
+<span id="cb17-14"><a href="#cb17-14"></a>        action <span class="op">=</span> epsilon_greedy(weights, tc_obj, state, epsilon<span class="op">=</span><span class="fl">0.0</span>, rng<span class="op">=</span>rng_obj)  <span class="co"># greedy rollout</span></span>
+<span id="cb17-15"><a href="#cb17-15"></a>        state, _, terminated, truncated, _ <span class="op">=</span> env_vid.step(action)</span>
+<span id="cb17-16"><a href="#cb17-16"></a>        done <span class="op">=</span> terminated <span class="kw">or</span> truncated</span>
+<span id="cb17-17"><a href="#cb17-17"></a>    env_vid.close()</span>
+<span id="cb17-18"><a href="#cb17-18"></a></span>
+<span id="cb17-19"><a href="#cb17-19"></a><span class="co"># Record one episode for each fixed-epsilon trained agent</span></span>
+<span id="cb17-20"><a href="#cb17-20"></a>record_greedy_video(sarsa_decay[<span class="st">"weights"</span>], sarsa_decay[<span class="st">"tc"</span>], <span class="st">"sarsa_videos"</span>, sarsa_decay[<span class="st">"rng"</span>], tag<span class="op">=</span><span class="st">"sarsa_decay"</span>)</span>
+<span id="cb17-21"><a href="#cb17-21"></a>record_greedy_video(q_decay[<span class="st">"weights"</span>], q_decay[<span class="st">"tc"</span>], <span class="st">"qlearning_videos"</span>, q_decay[<span class="st">"rng"</span>], tag<span class="op">=</span><span class="st">"qlearning_decay"</span>)</span>
+<span id="cb17-22"><a href="#cb17-22"></a></span>
+<span id="cb17-23"><a href="#cb17-23"></a>record_greedy_video(sarsa_fixed[<span class="st">"weights"</span>], sarsa_fixed[<span class="st">"tc"</span>], <span class="st">"sarsa_videos"</span>, sarsa_fixed[<span class="st">"rng"</span>], tag<span class="op">=</span><span class="st">"sarsa_fixed"</span>)</span>
+<span id="cb17-24"><a href="#cb17-24"></a>record_greedy_video(q_fixed[<span class="st">"weights"</span>], q_fixed[<span class="st">"tc"</span>], <span class="st">"qlearning_videos"</span>, q_fixed[<span class="st">"rng"</span>], tag<span class="op">=</span><span class="st">"qlearning_fixed"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<div class="ansi-escaped-output">
+<pre>/home/hegemon/RL-Assignments/env/lib/python3.12/site-packages/gymnasium/wrappers/rendering.py:293: UserWarning: <span class="ansi-yellow-fg">WARN: Overwriting existing videos at /home/hegemon/RL-Assignments/Assignment-1/1_SARSA-vs-Q/sarsa_videos folder (try specifying a different `video_folder` for the `RecordVideo` wrapper if this is not desired)</span>
+
+  logger.warn(
+
+/home/hegemon/RL-Assignments/env/lib/python3.12/site-packages/gymnasium/wrappers/rendering.py:293: UserWarning: <span class="ansi-yellow-fg">WARN: Overwriting existing videos at /home/hegemon/RL-Assignments/Assignment-1/1_SARSA-vs-Q/qlearning_videos folder (try specifying a different `video_folder` for the `RecordVideo` wrapper if this is not desired)</span>
+
+  logger.warn(
+</pre>
+</div>
+</div>
+</div>
+<section id="sarsa-videos" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="sarsa-videos"><span class="header-section-number">6.3.1</span> SARSA Videos</h3>
+<section id="fixed-epsilon" class="level4" data-number="6.3.1.1">
+<h4 data-number="6.3.1.1" class="anchored" data-anchor-id="fixed-epsilon"><span class="header-section-number">6.3.1.1</span> Fixed Epsilon</h4>
+<video controls="" width="320" height="240">
+<source src="sarsa_videos/sarsa_fixed-episode-0.mp4" type="video/mp4">
+<p>Your browser does not support the video tag. </p>
+</video></section>
+<section id="decaying-epsilon" class="level4" data-number="6.3.1.2">
+<h4 data-number="6.3.1.2" class="anchored" data-anchor-id="decaying-epsilon"><span class="header-section-number">6.3.1.2</span> Decaying Epsilon</h4>
+<video controls="" width="320" height="240">
+<source src="sarsa_videos/sarsa_decay-episode-0.mp4" type="video/mp4">
+<p>Your browser does not support the video tag. </p>
+</video></section>
+</section>
+<section id="q-learning-videos" class="level3" data-number="6.3.2">
+<h3 data-number="6.3.2" class="anchored" data-anchor-id="q-learning-videos"><span class="header-section-number">6.3.2</span> Q-Learning Videos</h3>
+<section id="fixed-epsilon-1" class="level4" data-number="6.3.2.1">
+<h4 data-number="6.3.2.1" class="anchored" data-anchor-id="fixed-epsilon-1"><span class="header-section-number">6.3.2.1</span> Fixed Epsilon</h4>
+<video controls="" width="320" height="240">
+<source src="qlearning_videos/qlearning_fixed-episode-0.mp4" type="video/mp4">
+<p>Your browser does not support the video tag. </p>
+</video></section>
+<section id="decaying-epsilon-1" class="level4" data-number="6.3.2.2">
+<h4 data-number="6.3.2.2" class="anchored" data-anchor-id="decaying-epsilon-1"><span class="header-section-number">6.3.2.2</span> Decaying Epsilon</h4>
+<video controls="" width="320" height="240">
+<source src="qlearning_videos/qlearning_decay-episode-0.mp4" type="video/mp4">
+<p>Your browser does not support the video tag. </p>
+</video></section>
+</section>
+</section>
+<section id="compare-epsilon-schedules" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="compare-epsilon-schedules"><span class="header-section-number">6.4</span> Compare epsilon schedules</h2>
+<div id="ff272d96" class="cell">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a></span>
+<span id="cb18-2"><a href="#cb18-2"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb18-3"><a href="#cb18-3"></a></span>
+<span id="cb18-4"><a href="#cb18-4"></a>ax[<span class="dv">0</span>].plot(sarsa_fixed[<span class="st">"epsilons"</span>], label<span class="op">=</span><span class="st">"Fixed"</span>)</span>
+<span id="cb18-5"><a href="#cb18-5"></a>ax[<span class="dv">0</span>].plot(sarsa_decay[<span class="st">"epsilons"</span>], label<span class="op">=</span><span class="st">"Decay"</span>)</span>
+<span id="cb18-6"><a href="#cb18-6"></a>ax[<span class="dv">0</span>].set_title(<span class="st">"Epsilon per Episode"</span>)</span>
+<span id="cb18-7"><a href="#cb18-7"></a>ax[<span class="dv">0</span>].set_xlabel(<span class="st">"Episode"</span>)</span>
+<span id="cb18-8"><a href="#cb18-8"></a>ax[<span class="dv">0</span>].set_ylabel(<span class="st">"Epsilon"</span>)</span>
+<span id="cb18-9"><a href="#cb18-9"></a>ax[<span class="dv">0</span>].legend()</span>
+<span id="cb18-10"><a href="#cb18-10"></a></span>
+<span id="cb18-11"><a href="#cb18-11"></a>tail <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb18-12"><a href="#cb18-12"></a>labels <span class="op">=</span> [<span class="st">"SARSA-Fixed"</span>, <span class="st">"SARSA-Decay"</span>, <span class="st">"Q-Fixed"</span>, <span class="st">"Q-Decay"</span>]</span>
+<span id="cb18-13"><a href="#cb18-13"></a>tail_returns <span class="op">=</span> [</span>
+<span id="cb18-14"><a href="#cb18-14"></a>    sarsa_fixed[<span class="st">"returns"</span>][<span class="op">-</span>tail:].mean(),</span>
+<span id="cb18-15"><a href="#cb18-15"></a>    sarsa_decay[<span class="st">"returns"</span>][<span class="op">-</span>tail:].mean(),</span>
+<span id="cb18-16"><a href="#cb18-16"></a>    q_fixed[<span class="st">"returns"</span>][<span class="op">-</span>tail:].mean(),</span>
+<span id="cb18-17"><a href="#cb18-17"></a>    q_decay[<span class="st">"returns"</span>][<span class="op">-</span>tail:].mean(),</span>
+<span id="cb18-18"><a href="#cb18-18"></a>]</span>
+<span id="cb18-19"><a href="#cb18-19"></a>ax[<span class="dv">1</span>].bar(labels, tail_returns)</span>
+<span id="cb18-20"><a href="#cb18-20"></a>ax[<span class="dv">1</span>].set_title(<span class="ss">f"Mean Return over Last </span><span class="sc">{</span>tail<span class="sc">}</span><span class="ss"> Episodes"</span>)</span>
+<span id="cb18-21"><a href="#cb18-21"></a>ax[<span class="dv">1</span>].set_ylabel(<span class="st">"Mean Return"</span>)</span>
+<span id="cb18-22"><a href="#cb18-22"></a>ax[<span class="dv">1</span>].tick_params(axis<span class="op">=</span><span class="st">"x"</span>, rotation<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb18-23"><a href="#cb18-23"></a></span>
+<span id="cb18-24"><a href="#cb18-24"></a>plt.tight_layout()</span>
+<span id="cb18-25"><a href="#cb18-25"></a>plt.show()</span>
+<span id="cb18-26"><a href="#cb18-26"></a></span>
+<span id="cb18-27"><a href="#cb18-27"></a><span class="bu">print</span>(<span class="st">"Tail metrics (last 100 episodes):"</span>)</span>
+<span id="cb18-28"><a href="#cb18-28"></a><span class="bu">print</span>(<span class="ss">f"SARSA fixed  : return=</span><span class="sc">{</span>sarsa_fixed[<span class="st">'returns'</span>][<span class="op">-</span><span class="dv">100</span>:]<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">, steps=</span><span class="sc">{</span>sarsa_fixed[<span class="st">'lengths'</span>][<span class="op">-</span><span class="dv">100</span>:]<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb18-29"><a href="#cb18-29"></a><span class="bu">print</span>(<span class="ss">f"SARSA decay  : return=</span><span class="sc">{</span>sarsa_decay[<span class="st">'returns'</span>][<span class="op">-</span><span class="dv">100</span>:]<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">, steps=</span><span class="sc">{</span>sarsa_decay[<span class="st">'lengths'</span>][<span class="op">-</span><span class="dv">100</span>:]<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb18-30"><a href="#cb18-30"></a><span class="bu">print</span>(<span class="ss">f"Q fixed      : return=</span><span class="sc">{</span>q_fixed[<span class="st">'returns'</span>][<span class="op">-</span><span class="dv">100</span>:]<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">, steps=</span><span class="sc">{</span>q_fixed[<span class="st">'lengths'</span>][<span class="op">-</span><span class="dv">100</span>:]<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb18-31"><a href="#cb18-31"></a><span class="bu">print</span>(<span class="ss">f"Q decay      : return=</span><span class="sc">{</span>q_decay[<span class="st">'returns'</span>][<span class="op">-</span><span class="dv">100</span>:]<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">, steps=</span><span class="sc">{</span>q_decay[<span class="st">'lengths'</span>][<span class="op">-</span><span class="dv">100</span>:]<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assignment_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Tail metrics (last 100 episodes):
+SARSA fixed  : return=-197.67, steps=197.67
+SARSA decay  : return=-187.63, steps=187.63
+Q fixed      : return=-195.60, steps=195.60
+Q decay      : return=-194.04, steps=194.04</code></pre>
+</div>
+</div>
+</section>
+<section id="sensitivity-analysis" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="sensitivity-analysis"><span class="header-section-number">6.5</span> Sensitivity Analysis</h2>
+<p>Using the <strong>fixed epsilon</strong> implementation, we evaluate both algorithms over a grid of: - Learning rate <span class="math inline">\(\alpha \in \{0.1, 0.01, 0.001\}\)</span> - Exploration rate <span class="math inline">\(\epsilon \in \{0.1, 0.01, 0.001\}\)</span></p>
+<p>For each pair, we train from scratch and summarize performance by the mean return and mean episode length over the last <span class="math inline">\(N\)</span> episodes.</p>
+<div id="5aae690a" class="cell" data-execution_count="34">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># Fixed-epsilon sensitivity analysis for SARSA and Q-Learning</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a></span>
+<span id="cb20-3"><a href="#cb20-3"></a>alpha_values <span class="op">=</span> np.array([<span class="fl">0.1</span>, <span class="fl">0.01</span>, <span class="fl">0.001</span>], dtype<span class="op">=</span>np.float64)</span>
+<span id="cb20-4"><a href="#cb20-4"></a>epsilon_values <span class="op">=</span> np.array([<span class="fl">0.1</span>, <span class="fl">0.01</span>, <span class="fl">0.001</span>], dtype<span class="op">=</span>np.float64)</span>
+<span id="cb20-5"><a href="#cb20-5"></a></span>
+<span id="cb20-6"><a href="#cb20-6"></a>SENS_EPISODES <span class="op">=</span> NUM_EPISODES</span>
+<span id="cb20-7"><a href="#cb20-7"></a>EVAL_TAIL <span class="op">=</span> <span class="dv">100</span>  <span class="co"># metrics computed over last N episodes</span></span>
+<span id="cb20-8"><a href="#cb20-8"></a></span>
+<span id="cb20-9"><a href="#cb20-9"></a></span>
+<span id="cb20-10"><a href="#cb20-10"></a><span class="kw">def</span> run_fixed_grid_search(train_fn, alpha_grid, epsilon_grid, episodes<span class="op">=</span>SENS_EPISODES, seed_base<span class="op">=</span><span class="dv">1234</span>):</span>
+<span id="cb20-11"><a href="#cb20-11"></a>    mean_returns <span class="op">=</span> np.zeros((<span class="bu">len</span>(alpha_grid), <span class="bu">len</span>(epsilon_grid)), dtype<span class="op">=</span>np.float64)</span>
+<span id="cb20-12"><a href="#cb20-12"></a>    mean_lengths <span class="op">=</span> np.zeros((<span class="bu">len</span>(alpha_grid), <span class="bu">len</span>(epsilon_grid)), dtype<span class="op">=</span>np.float64)</span>
+<span id="cb20-13"><a href="#cb20-13"></a></span>
+<span id="cb20-14"><a href="#cb20-14"></a>    <span class="cf">for</span> i, alpha_raw <span class="kw">in</span> <span class="bu">enumerate</span>(alpha_grid):</span>
+<span id="cb20-15"><a href="#cb20-15"></a>        <span class="cf">for</span> j, epsilon_fixed <span class="kw">in</span> <span class="bu">enumerate</span>(epsilon_grid):</span>
+<span id="cb20-16"><a href="#cb20-16"></a>            out <span class="op">=</span> train_fn(</span>
+<span id="cb20-17"><a href="#cb20-17"></a>                num_episodes<span class="op">=</span>episodes,</span>
+<span id="cb20-18"><a href="#cb20-18"></a>                alpha<span class="op">=</span>alpha_raw <span class="op">/</span> n_tilings,  <span class="co"># keep tile-coding scaling consistent with earlier sections</span></span>
+<span id="cb20-19"><a href="#cb20-19"></a>                gamma<span class="op">=</span>gamma,</span>
+<span id="cb20-20"><a href="#cb20-20"></a>                n_tilings<span class="op">=</span>n_tilings,</span>
+<span id="cb20-21"><a href="#cb20-21"></a>                bins<span class="op">=</span>bins,</span>
+<span id="cb20-22"><a href="#cb20-22"></a>                epsilon_mode<span class="op">=</span><span class="st">"fixed"</span>,</span>
+<span id="cb20-23"><a href="#cb20-23"></a>                epsilon_fixed<span class="op">=</span>epsilon_fixed,</span>
+<span id="cb20-24"><a href="#cb20-24"></a>                seed<span class="op">=</span>seed_base <span class="op">+</span> <span class="dv">100</span> <span class="op">*</span> i <span class="op">+</span> j,</span>
+<span id="cb20-25"><a href="#cb20-25"></a>            )</span>
+<span id="cb20-26"><a href="#cb20-26"></a>            mean_returns[i, j] <span class="op">=</span> out[<span class="st">"returns"</span>][<span class="op">-</span>EVAL_TAIL:].mean()</span>
+<span id="cb20-27"><a href="#cb20-27"></a>            mean_lengths[i, j] <span class="op">=</span> out[<span class="st">"lengths"</span>][<span class="op">-</span>EVAL_TAIL:].mean()</span>
+<span id="cb20-28"><a href="#cb20-28"></a></span>
+<span id="cb20-29"><a href="#cb20-29"></a>    <span class="cf">return</span> mean_returns, mean_lengths</span>
+<span id="cb20-30"><a href="#cb20-30"></a></span>
+<span id="cb20-31"><a href="#cb20-31"></a></span>
+<span id="cb20-32"><a href="#cb20-32"></a>sarsa_ret_grid, sarsa_len_grid <span class="op">=</span> run_fixed_grid_search(</span>
+<span id="cb20-33"><a href="#cb20-33"></a>    train_sarsa_tile, alpha_values, epsilon_values, episodes<span class="op">=</span>SENS_EPISODES, seed_base<span class="op">=</span><span class="dv">1200</span></span>
+<span id="cb20-34"><a href="#cb20-34"></a>)</span>
+<span id="cb20-35"><a href="#cb20-35"></a>q_ret_grid, q_len_grid <span class="op">=</span> run_fixed_grid_search(</span>
+<span id="cb20-36"><a href="#cb20-36"></a>    train_q_learning_tile, alpha_values, epsilon_values, episodes<span class="op">=</span>SENS_EPISODES, seed_base<span class="op">=</span><span class="dv">2200</span></span>
+<span id="cb20-37"><a href="#cb20-37"></a>)</span>
+<span id="cb20-38"><a href="#cb20-38"></a></span>
+<span id="cb20-39"><a href="#cb20-39"></a><span class="co"># Plot: higher mean return is better (less negative), lower episode length is better</span></span>
+<span id="cb20-40"><a href="#cb20-40"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
+<span id="cb20-41"><a href="#cb20-41"></a></span>
+<span id="cb20-42"><a href="#cb20-42"></a><span class="co"># SARSA return heatmap</span></span>
+<span id="cb20-43"><a href="#cb20-43"></a>im <span class="op">=</span> ax[<span class="dv">0</span>, <span class="dv">0</span>].imshow(sarsa_ret_grid, cmap<span class="op">=</span><span class="st">"viridis"</span>, aspect<span class="op">=</span><span class="st">"auto"</span>)</span>
+<span id="cb20-44"><a href="#cb20-44"></a>ax[<span class="dv">0</span>, <span class="dv">0</span>].set_title(<span class="ss">f"SARSA Mean Return (last </span><span class="sc">{</span>EVAL_TAIL<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb20-45"><a href="#cb20-45"></a>ax[<span class="dv">0</span>, <span class="dv">0</span>].set_xticks(np.arange(<span class="bu">len</span>(epsilon_values)))</span>
+<span id="cb20-46"><a href="#cb20-46"></a>ax[<span class="dv">0</span>, <span class="dv">0</span>].set_yticks(np.arange(<span class="bu">len</span>(alpha_values)))</span>
+<span id="cb20-47"><a href="#cb20-47"></a>ax[<span class="dv">0</span>, <span class="dv">0</span>].set_xticklabels(epsilon_values)</span>
+<span id="cb20-48"><a href="#cb20-48"></a>ax[<span class="dv">0</span>, <span class="dv">0</span>].set_yticklabels(alpha_values)</span>
+<span id="cb20-49"><a href="#cb20-49"></a>ax[<span class="dv">0</span>, <span class="dv">0</span>].set_xlabel(<span class="st">"epsilon"</span>)</span>
+<span id="cb20-50"><a href="#cb20-50"></a>ax[<span class="dv">0</span>, <span class="dv">0</span>].set_ylabel(<span class="st">"alpha"</span>)</span>
+<span id="cb20-51"><a href="#cb20-51"></a>fig.colorbar(im, ax<span class="op">=</span>ax[<span class="dv">0</span>, <span class="dv">0</span>], fraction<span class="op">=</span><span class="fl">0.046</span>, pad<span class="op">=</span><span class="fl">0.04</span>)</span>
+<span id="cb20-52"><a href="#cb20-52"></a></span>
+<span id="cb20-53"><a href="#cb20-53"></a><span class="co"># Q-Learning return heatmap</span></span>
+<span id="cb20-54"><a href="#cb20-54"></a>im <span class="op">=</span> ax[<span class="dv">0</span>, <span class="dv">1</span>].imshow(q_ret_grid, cmap<span class="op">=</span><span class="st">"viridis"</span>, aspect<span class="op">=</span><span class="st">"auto"</span>)</span>
+<span id="cb20-55"><a href="#cb20-55"></a>ax[<span class="dv">0</span>, <span class="dv">1</span>].set_title(<span class="ss">f"Q-Learning Mean Return (last </span><span class="sc">{</span>EVAL_TAIL<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb20-56"><a href="#cb20-56"></a>ax[<span class="dv">0</span>, <span class="dv">1</span>].set_xticks(np.arange(<span class="bu">len</span>(epsilon_values)))</span>
+<span id="cb20-57"><a href="#cb20-57"></a>ax[<span class="dv">0</span>, <span class="dv">1</span>].set_yticks(np.arange(<span class="bu">len</span>(alpha_values)))</span>
+<span id="cb20-58"><a href="#cb20-58"></a>ax[<span class="dv">0</span>, <span class="dv">1</span>].set_xticklabels(epsilon_values)</span>
+<span id="cb20-59"><a href="#cb20-59"></a>ax[<span class="dv">0</span>, <span class="dv">1</span>].set_yticklabels(alpha_values)</span>
+<span id="cb20-60"><a href="#cb20-60"></a>ax[<span class="dv">0</span>, <span class="dv">1</span>].set_xlabel(<span class="st">"epsilon"</span>)</span>
+<span id="cb20-61"><a href="#cb20-61"></a>ax[<span class="dv">0</span>, <span class="dv">1</span>].set_ylabel(<span class="st">"alpha"</span>)</span>
+<span id="cb20-62"><a href="#cb20-62"></a>fig.colorbar(im, ax<span class="op">=</span>ax[<span class="dv">0</span>, <span class="dv">1</span>], fraction<span class="op">=</span><span class="fl">0.046</span>, pad<span class="op">=</span><span class="fl">0.04</span>)</span>
+<span id="cb20-63"><a href="#cb20-63"></a></span>
+<span id="cb20-64"><a href="#cb20-64"></a><span class="co"># SARSA episode-length heatmap</span></span>
+<span id="cb20-65"><a href="#cb20-65"></a>im <span class="op">=</span> ax[<span class="dv">1</span>, <span class="dv">0</span>].imshow(sarsa_len_grid, cmap<span class="op">=</span><span class="st">"magma_r"</span>, aspect<span class="op">=</span><span class="st">"auto"</span>)</span>
+<span id="cb20-66"><a href="#cb20-66"></a>ax[<span class="dv">1</span>, <span class="dv">0</span>].set_title(<span class="ss">f"SARSA Mean Episode Length (last </span><span class="sc">{</span>EVAL_TAIL<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb20-67"><a href="#cb20-67"></a>ax[<span class="dv">1</span>, <span class="dv">0</span>].set_xticks(np.arange(<span class="bu">len</span>(epsilon_values)))</span>
+<span id="cb20-68"><a href="#cb20-68"></a>ax[<span class="dv">1</span>, <span class="dv">0</span>].set_yticks(np.arange(<span class="bu">len</span>(alpha_values)))</span>
+<span id="cb20-69"><a href="#cb20-69"></a>ax[<span class="dv">1</span>, <span class="dv">0</span>].set_xticklabels(epsilon_values)</span>
+<span id="cb20-70"><a href="#cb20-70"></a>ax[<span class="dv">1</span>, <span class="dv">0</span>].set_yticklabels(alpha_values)</span>
+<span id="cb20-71"><a href="#cb20-71"></a>ax[<span class="dv">1</span>, <span class="dv">0</span>].set_xlabel(<span class="st">"epsilon"</span>)</span>
+<span id="cb20-72"><a href="#cb20-72"></a>ax[<span class="dv">1</span>, <span class="dv">0</span>].set_ylabel(<span class="st">"alpha"</span>)</span>
+<span id="cb20-73"><a href="#cb20-73"></a>fig.colorbar(im, ax<span class="op">=</span>ax[<span class="dv">1</span>, <span class="dv">0</span>], fraction<span class="op">=</span><span class="fl">0.046</span>, pad<span class="op">=</span><span class="fl">0.04</span>)</span>
+<span id="cb20-74"><a href="#cb20-74"></a></span>
+<span id="cb20-75"><a href="#cb20-75"></a><span class="co"># Q-Learning episode-length heatmap</span></span>
+<span id="cb20-76"><a href="#cb20-76"></a>im <span class="op">=</span> ax[<span class="dv">1</span>, <span class="dv">1</span>].imshow(q_len_grid, cmap<span class="op">=</span><span class="st">"magma_r"</span>, aspect<span class="op">=</span><span class="st">"auto"</span>)</span>
+<span id="cb20-77"><a href="#cb20-77"></a>ax[<span class="dv">1</span>, <span class="dv">1</span>].set_title(<span class="ss">f"Q-Learning Mean Episode Length (last </span><span class="sc">{</span>EVAL_TAIL<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb20-78"><a href="#cb20-78"></a>ax[<span class="dv">1</span>, <span class="dv">1</span>].set_xticks(np.arange(<span class="bu">len</span>(epsilon_values)))</span>
+<span id="cb20-79"><a href="#cb20-79"></a>ax[<span class="dv">1</span>, <span class="dv">1</span>].set_yticks(np.arange(<span class="bu">len</span>(alpha_values)))</span>
+<span id="cb20-80"><a href="#cb20-80"></a>ax[<span class="dv">1</span>, <span class="dv">1</span>].set_xticklabels(epsilon_values)</span>
+<span id="cb20-81"><a href="#cb20-81"></a>ax[<span class="dv">1</span>, <span class="dv">1</span>].set_yticklabels(alpha_values)</span>
+<span id="cb20-82"><a href="#cb20-82"></a>ax[<span class="dv">1</span>, <span class="dv">1</span>].set_xlabel(<span class="st">"epsilon"</span>)</span>
+<span id="cb20-83"><a href="#cb20-83"></a>ax[<span class="dv">1</span>, <span class="dv">1</span>].set_ylabel(<span class="st">"alpha"</span>)</span>
+<span id="cb20-84"><a href="#cb20-84"></a>fig.colorbar(im, ax<span class="op">=</span>ax[<span class="dv">1</span>, <span class="dv">1</span>], fraction<span class="op">=</span><span class="fl">0.046</span>, pad<span class="op">=</span><span class="fl">0.04</span>)</span>
+<span id="cb20-85"><a href="#cb20-85"></a></span>
+<span id="cb20-86"><a href="#cb20-86"></a>plt.tight_layout()</span>
+<span id="cb20-87"><a href="#cb20-87"></a>plt.show()</span>
+<span id="cb20-88"><a href="#cb20-88"></a></span>
+<span id="cb20-89"><a href="#cb20-89"></a><span class="co"># Report best fixed-epsilon setting by mean return</span></span>
+<span id="cb20-90"><a href="#cb20-90"></a><span class="kw">def</span> print_best_by_return(name, ret_grid, len_grid):</span>
+<span id="cb20-91"><a href="#cb20-91"></a>    best_idx <span class="op">=</span> np.unravel_index(np.argmax(ret_grid), ret_grid.shape)</span>
+<span id="cb20-92"><a href="#cb20-92"></a>    best_alpha <span class="op">=</span> alpha_values[best_idx[<span class="dv">0</span>]]</span>
+<span id="cb20-93"><a href="#cb20-93"></a>    best_epsilon <span class="op">=</span> epsilon_values[best_idx[<span class="dv">1</span>]]</span>
+<span id="cb20-94"><a href="#cb20-94"></a>    best_ret <span class="op">=</span> ret_grid[best_idx]</span>
+<span id="cb20-95"><a href="#cb20-95"></a>    best_len <span class="op">=</span> len_grid[best_idx]</span>
+<span id="cb20-96"><a href="#cb20-96"></a>    <span class="bu">print</span>(</span>
+<span id="cb20-97"><a href="#cb20-97"></a>        <span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> best (fixed epsilon) -&gt; alpha=</span><span class="sc">{</span>best_alpha<span class="sc">}</span><span class="ss">, epsilon=</span><span class="sc">{</span>best_epsilon<span class="sc">}</span><span class="ss">, "</span></span>
+<span id="cb20-98"><a href="#cb20-98"></a>        <span class="ss">f"mean_return=</span><span class="sc">{</span>best_ret<span class="sc">:.2f}</span><span class="ss">, mean_length=</span><span class="sc">{</span>best_len<span class="sc">:.2f}</span><span class="ss">"</span></span>
+<span id="cb20-99"><a href="#cb20-99"></a>    )</span>
+<span id="cb20-100"><a href="#cb20-100"></a></span>
+<span id="cb20-101"><a href="#cb20-101"></a>print_best_by_return(<span class="st">"SARSA"</span>, sarsa_ret_grid, sarsa_len_grid)</span>
+<span id="cb20-102"><a href="#cb20-102"></a>print_best_by_return(<span class="st">"Q-Learning"</span>, q_ret_grid, q_len_grid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training SARSA (fixed):   0%|          | 0/200 [00:00&lt;?, ?it/s]Training SARSA (fixed): 100%|██████████| 200/200 [00:35&lt;00:00,  5.68it/s]
+Training SARSA (fixed): 100%|██████████| 200/200 [00:36&lt;00:00,  5.41it/s]
+Training SARSA (fixed): 100%|██████████| 200/200 [00:38&lt;00:00,  5.25it/s]
+Training SARSA (fixed): 100%|██████████| 200/200 [00:36&lt;00:00,  5.51it/s]
+Training SARSA (fixed): 100%|██████████| 200/200 [00:37&lt;00:00,  5.40it/s]
+Training SARSA (fixed): 100%|██████████| 200/200 [00:36&lt;00:00,  5.52it/s]
+Training SARSA (fixed): 100%|██████████| 200/200 [00:34&lt;00:00,  5.74it/s]
+Training SARSA (fixed): 100%|██████████| 200/200 [00:38&lt;00:00,  5.25it/s]
+Training SARSA (fixed): 100%|██████████| 200/200 [00:37&lt;00:00,  5.34it/s]
+Training Q-Learning (fixed): 100%|██████████| 200/200 [00:50&lt;00:00,  3.97it/s]
+Training Q-Learning (fixed): 100%|██████████| 200/200 [00:51&lt;00:00,  3.89it/s]
+Training Q-Learning (fixed): 100%|██████████| 200/200 [00:50&lt;00:00,  3.94it/s]
+Training Q-Learning (fixed): 100%|██████████| 200/200 [00:49&lt;00:00,  4.05it/s]
+Training Q-Learning (fixed): 100%|██████████| 200/200 [00:53&lt;00:00,  3.73it/s]
+Training Q-Learning (fixed): 100%|██████████| 200/200 [00:55&lt;00:00,  3.59it/s]
+Training Q-Learning (fixed): 100%|██████████| 200/200 [00:50&lt;00:00,  3.96it/s]
+Training Q-Learning (fixed): 100%|██████████| 200/200 [00:49&lt;00:00,  4.02it/s]
+Training Q-Learning (fixed): 100%|██████████| 200/200 [00:50&lt;00:00,  3.96it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assignment_files/figure-html/cell-13-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>SARSA best (fixed epsilon) -&gt; alpha=0.1, epsilon=0.001, mean_return=-183.77, mean_length=183.77
+Q-Learning best (fixed epsilon) -&gt; alpha=0.1, epsilon=0.001, mean_return=-189.20, mean_length=189.20</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="tasks" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Tasks</h1>
+<ol type="1">
+<li>Implement SARSA and Q-Learning with function approximation</li>
+<li>Train both agents under identical experimental settings</li>
+<li>Plot Learning Curves showing episodic return versus training episodes</li>
+<li>Analyze the Sensitivity of both algorithms to the learning rate and exploration parameter</li>
+</ol>
+<section id="task-1" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="task-1"><span class="header-section-number">7.1</span> Task 1</h2>
+<p>Implemented both!</p>
+</section>
+<section id="task-2" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="task-2"><span class="header-section-number">7.2</span> Task 2</h2>
+<p>For function approximation, I used tile coding with n_tilings = 8, bins = (8, 8), gamma = 1.0, alpha = 0.4 / n_tilings (This alpha was recommended in the text book).</p>
+<p>For epsilon, I used 2 strategies: 1. Fixed Epsilon of 0.2 2. Decaying Epsilon with 1.0 to 0.05 with epsilon decay ratio of 0.8!</p>
+<p>The SARSA with Epsilon-Decay produced the best mean return and mean epsiode length.</p>
+</section>
+<section id="task-3" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="task-3"><span class="header-section-number">7.3</span> Task 3</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="task_3.png" class="img-fluid figure-img"></p>
+<figcaption>Learning Curves</figcaption>
+</figure>
+</div>
+</section>
+<section id="task-4" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="task-4"><span class="header-section-number">7.4</span> Task 4</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="task_4.png" class="img-fluid figure-img"></p>
+<figcaption>Hyperparameter Sensitivity</figcaption>
+</figure>
+</div>
+<p><strong>SARSA best</strong> (<em>fixed epsilon</em>): 1. alpha=0.1, 2. epsilon=0.001, 3. mean_return=-183.77, 4. mean_length=183.77</p>
+<p><strong>Q-Learning best</strong> (<em>fixed epsilon</em>): 1. alpha=0.1, 2. epsilon=0.001, 3. mean_return=-189.20, 4. mean_length=189.20</p>
+<p><strong>Points</strong>: 1. With alpha less than 0.1, both algorithms fail to learn effectively, resulting in poor performance. 2. SARSA does better than Q-Learning across all hyperparameter settings, likely due to its on-policy nature which allows it to learn more effectively in this environment.</p>
+</section>
+</section>
+<section id="analysis-questions" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Analysis Questions</h1>
+<ol type="1">
+<li>Compare learning behaviour of SARSA and Q-Learning. Are there qualitative differences in stability or convergence?</li>
+<li>How does function approximation affect learning compared to the tabular case?</li>
+<li>Discuss the role of off-policy versus on-policy updates in the environment</li>
+</ol>
+<section id="question-1" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="question-1"><span class="header-section-number">8.1</span> Question 1</h2>
+<p><strong><em>Are there qualitative differences in stability or convergence between SARSA and Q-Learning?</em></strong></p>
+<p><strong>SARSA</strong> More formally, <em>episodic semi-gradient one-step SARSA control</em>, a natural extension of the <strong>Semi-Gradient TD(0)</strong> method to the control case. For a constant policy, this algorithm converges in the same way that TD(0) does, which is to a point near local optimum, with the same kind of error bound: <span class="math inline">\(\bar{VE} \leq \frac{1}{1 - \gamma} \min_{w} \bar{VE}(w)\)</span>. (Section 9.12)</p>
+<p>There is a substantial potential loss in asymptotic performance of SARSA, a TD Method, but they are often of vastly reduced variance compared to Monte Carlo methods.</p>
+<p>Since SARSA is a semi-gradient method, built using linear approximation, it is guaranteed to converge to a point near local optimum. (Section 10.1)</p>
+<p>But, qualitatively speaking, SARSA was more stable and converged faster than Q-Learning in this environment. The learning curves for SARSA showed a steady increase in episodic return and decrease in episode length, while Q-Learning exhibited receeded performance.</p>
+<p><strong>Q-Learning</strong></p>
+<p>In contrast, Q-Learning algorithm with function approximation is an off-policy method, and it is not guaranteed to converge. In practice, it can diverge or oscillate, especially when using function approximation. The learning curves for Q-Learning showed more variability (not erratic, though, given the simple environment) and slower convergence compared to SARSA.</p>
+<p>Interestingly, Q-Learning was not formally described in the book, even in Chapter 11, which is dedicated to off-policy methods. This suggests the shaky grounds on which Q-Learning stands when combined with function approximation, and the importance of careful implementation.</p>
+<p>The simplicity of the mountain car environment likely contributed to the relatively stable performance of Q-Learning, but in more complex environments, the divergence issues could be more pronounced.</p>
+</section>
+<section id="question-2" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="question-2"><span class="header-section-number">8.2</span> Question 2</h2>
+<p><strong><em>How does function approximation affect learning compared to the tabular case?</em></strong></p>
+<p>In <strong>Function Approximation</strong>, we parameterize the value function with a set of weights and features instead of a table of values for each state. Typically, the number of weights (dimensionality of <strong>w</strong>) is much smaller than the number of states. When a single state is updated, the change generalizes from that state to affect the values of many other states. Such <em>generalization</em> makes the learning potentially more powerful but also potentially more difficult to manage and understand. (Section 9.1).</p>
+<p>It allows us to work with continuous state spaces and large state-action spaces where tabular methods would be infeasible.</p>
+<p>The most terrible downside of function approximation is that we loose the <strong>policy improvement guarantee</strong> that we have in the tabular case.</p>
+<p>In the tabular case, both SARSA and Q-Learning are guaranteed to converge to the optimal policy under certain conditions. However, with function approximation, especially with linear function approximation, we can only guarantee convergence under certain conditions, and that too not to a optimal policy.</p>
+</section>
+<section id="question-3" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="question-3"><span class="header-section-number">8.3</span> Question 3</h2>
+<p><strong><em>Discuss the role of off-policy versus on-policy updates in the environment</em></strong></p>
+<p><strong>SARSA</strong> is an on-policy method, where data acquired from the environment is used to update the action-value estimates based on the actions actually taken by the current policy.</p>
+<p>On the other hand, <strong>Q-Learning</strong> uses off-policy updates, meaning it updates its action-value estimates based on the greedy action, regardless of the action taken by the current policy.</p>
+<p>The <strong>SARSA</strong> algorithm is a <em>semi-gradient method</em>. Although, semi-gradient methods do not converge as robustly as gradient methods, they do converge reliably in important cases such as the <strong>Tile-Coding</strong> function approximator, which is a <em>linear</em> function approximator.</p>
+<p>The <strong>Section 9.2</strong> clearly points to the importance of on-policy distribution for convergence guarantees in the semi-gradient algorithms.</p>
+<p>Unfortunately, due to the off-policy nature of Q-Learning, the <em>distribution of updates</em> may not align with the on-policy distribution, leading to potential <strong>divergence</strong> or <strong>instability</strong>.</p>
+<p>The <strong>Chapter 11</strong> recommends warping the update distribution to be on-policy using <strong>importance sampling</strong>. However, in practice, especially in simple environments like mountain car, we can often get away with directly using the greedy policy for updates without importance sampling, but this is not guaranteed to work in more complex environments.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
